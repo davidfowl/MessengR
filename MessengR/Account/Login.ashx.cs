@@ -2,6 +2,7 @@
 using System.Text;
 using System.Web;
 using System.Web.Security;
+using MembershipService.Common;
 
 namespace MessengR.Account
 {
@@ -21,6 +22,8 @@ namespace MessengR.Account
 
         public void ProcessRequest(HttpContext context)
         {
+            DoNotRedirectToLoginModule.ApplyForRequest(new HttpContextWrapper(context));
+
             string username;
             string password;
             if (TryExtractBasicAuthCredentials(context.Request, out username, out password) &&
@@ -30,8 +33,9 @@ namespace MessengR.Account
             }
             else
             {
-                // Incorrect but forms auth sucks. Find a way to return 401 without having it redirect.
-                context.Response.StatusCode = 403;
+                context.Response.StatusCode = 401;
+                context.Response.Status = "401 Unauthorized";
+                context.Response.AddHeader("WWW-Authenticate", "Basic");
             }
         }
 

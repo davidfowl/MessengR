@@ -35,6 +35,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MembershipService.Common">
+      <HintPath>..\packages\MembershipService.WebForms.0.1\lib\net40\MembershipService.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="MembershipService.WebForms">
+      <HintPath>..\packages\MembershipService.WebForms.0.1\lib\net40\MembershipService.WebForms.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>

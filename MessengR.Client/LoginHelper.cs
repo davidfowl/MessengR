@@ -11,7 +11,7 @@ namespace MessengR.Client
             // We're going to login and retrieve the auth token
             var uri = new Uri(new Uri(url, UriKind.Absolute), "Account/Login.ashx");
             var webRequest = (HttpWebRequest)HttpWebRequest.Create(uri);
-            webRequest.Headers["Authorization"] = "Basic " + GetAuthHeader(userName, password);
+            webRequest.Credentials = new NetworkCredential(userName, password);
             webRequest.CookieContainer = new CookieContainer();
 
             using (var response = (HttpWebResponse)webRequest.GetResponse())
