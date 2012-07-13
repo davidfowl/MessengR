@@ -20,12 +20,5 @@ namespace MessengR.Client
                 return response.Cookies[".ASPXAUTH"];
             }
         }
-
-        private static string GetAuthHeader(string userName, string password)
-        {
-            string authorizationHeader = userName + ":" + password;
-            authorizationHeader = Convert.ToBase64String(Encoding.Default.GetBytes(authorizationHeader));
-            return authorizationHeader;
-        }
     }
 }
