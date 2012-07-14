@@ -11,7 +11,7 @@ namespace MessengR.Client
             // We're going to login and retrieve the auth token
             var uri = new Uri(new Uri(url, UriKind.Absolute), "Account/Login.ashx");
             var webRequest = (HttpWebRequest)HttpWebRequest.Create(uri);
-            var authResult = new AuthenticationResult() {StatusCode = HttpStatusCode.Unused};
+            var authResult = new AuthenticationResult() { StatusCode = HttpStatusCode.Unused };
             webRequest.Credentials = new NetworkCredential(userName, password);
             webRequest.CookieContainer = new CookieContainer();
 
@@ -20,7 +20,8 @@ namespace MessengR.Client
                 using (var response = (HttpWebResponse)webRequest.GetResponse())
                 {
                     authResult.StatusCode = response.StatusCode;
-                    authResult.Entity = response.Cookies[".ASPXAUTH"];
+                    authResult.AuthCookie = response.Cookies[".ASPXAUTH"];
+
                     // Return the auth cookie
                     return authResult;
                 }

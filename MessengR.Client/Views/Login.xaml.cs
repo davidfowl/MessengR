@@ -27,7 +27,7 @@ namespace MessengR.Client
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            var authResult = LoginHelper.Login(ConfigurationManager.AppSettings["HostURL"], txtUsername.Text, txtPassword.Password);
+            AuthenticationResult authResult = LoginHelper.Login(ConfigurationManager.AppSettings["HostURL"], txtUsername.Text, txtPassword.Password);
             if(authResult.StatusCode == HttpStatusCode.OK)
             {
                 var mainWindow = new MainWindow();
@@ -36,7 +36,7 @@ namespace MessengR.Client
             }
             else
             {
-                if(!string.IsNullOrEmpty(authResult.Message))
+                if(!String.IsNullOrEmpty(authResult.Message))
                 {
                     txtError.Text = authResult.Message;
                     txtError.Visibility = Visibility.Visible;
