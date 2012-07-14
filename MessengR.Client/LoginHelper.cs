@@ -6,18 +6,34 @@ namespace MessengR.Client
 {
     public static class LoginHelper
     {
-        public static Cookie Login(string url, string userName, string password)
+        public static AuthenticationResult Login(string url, string userName, string password)
         {
             // We're going to login and retrieve the auth token
             var uri = new Uri(new Uri(url, UriKind.Absolute), "Account/Login.ashx");
             var webRequest = (HttpWebRequest)HttpWebRequest.Create(uri);
+            var authResult = new AuthenticationResult() {StatusCode = HttpStatusCode.Unused};
             webRequest.Credentials = new NetworkCredential(userName, password);
             webRequest.CookieContainer = new CookieContainer();
 
-            using (var response = (HttpWebResponse)webRequest.GetResponse())
+            try
             {
-                // Return the auth cookie
-                return response.Cookies[".ASPXAUTH"];
+                using (var response = (HttpWebResponse)webRequest.GetResponse())
+                {
+                    authResult.StatusCode = response.StatusCode;
+                    authResult.Entity = response.Cookies[".ASPXAUTH"];
+                    // Return the auth cookie
+                    return authResult;
+                }
+            }
+            catch (WebException wex)
+            {
+                var response = wex.Response as HttpWebResponse;
+                if (response != null)
+                {
+                    authResult.StatusCode = response.StatusCode;
+                    authResult.Message = wex.Message;
+                }
+                return authResult;
             }
         }
     }
