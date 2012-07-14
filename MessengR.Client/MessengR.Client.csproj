@@ -161,6 +161,12 @@
   <ItemGroup>
     <Resource Include="Resources\Images\chat.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MessengR.Models\MessengR.Models.csproj">
+      <Project>{FD8D602C-7FF6-4E18-B359-87D482848524}</Project>
+      <Name>MessengR.Models</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

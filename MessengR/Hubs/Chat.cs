@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web.Security;
+using MessengR.Models;
 using SignalR.Hubs;
 
 namespace MessengR
@@ -39,6 +41,27 @@ namespace MessengR
         public static bool IsOnline(string user)
         {
             return _userConnections.ContainsKey(user);
+        }
+
+        public IEnumerable<UserViewModel> GetUsers()
+        {
+            return from MembershipUser u in Membership.GetAllUsers()
+                   select GetUser(u);
+        }
+
+        public UserViewModel GetUser(string userName)
+        {
+            return GetUser(Membership.GetUser(userName));
+        }
+
+        private UserViewModel GetUser(MembershipUser u)
+        {
+            return new UserViewModel
+            {
+                Online = IsOnline(u.UserName),
+                Name = u.UserName,
+                Email = u.Email
+            };
         }
 
         public Task Connect()
@@ -96,7 +119,7 @@ namespace MessengR
                 if (connections.Count == 0)
                 {
                     _userConnections.TryRemove(userName, out connections);
-                    
+
                     // If this is the last connection, mark the user offline
                     return Clients.markOffline(userName);
                 }
