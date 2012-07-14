@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{899D88
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessengR.Models", "MessengR.Models\MessengR.Models.csproj", "{FD8D602C-7FF6-4E18-B359-87D482848524}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,6 +44,16 @@ Global
 		{ACA55A69-81CA-4124-873D-B72850A76222}.Release|Mixed Platforms.Build.0 = Release|x86
 		{ACA55A69-81CA-4124-873D-B72850A76222}.Release|x86.ActiveCfg = Release|x86
 		{ACA55A69-81CA-4124-873D-B72850A76222}.Release|x86.Build.0 = Release|x86
+		{FD8D602C-7FF6-4E18-B359-87D482848524}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD8D602C-7FF6-4E18-B359-87D482848524}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD8D602C-7FF6-4E18-B359-87D482848524}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{FD8D602C-7FF6-4E18-B359-87D482848524}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{FD8D602C-7FF6-4E18-B359-87D482848524}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FD8D602C-7FF6-4E18-B359-87D482848524}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD8D602C-7FF6-4E18-B359-87D482848524}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD8D602C-7FF6-4E18-B359-87D482848524}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{FD8D602C-7FF6-4E18-B359-87D482848524}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{FD8D602C-7FF6-4E18-B359-87D482848524}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
