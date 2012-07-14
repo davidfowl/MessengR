@@ -13,14 +13,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace MessengR.Client
+namespace MessengR.Client.View
 {
     /// <summary>
-    /// Interaction logic for Login.xaml
+    /// Interaction logic for LoginView.xaml
     /// </summary>
-    public partial class Login
+    public partial class LoginView
     {
-        public Login()
+        public LoginView()
         {
             InitializeComponent();
         }
