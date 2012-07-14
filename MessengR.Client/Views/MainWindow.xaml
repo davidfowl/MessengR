@@ -6,7 +6,7 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources/Icons.xaml" />
+                <ResourceDictionary Source="../Resources/Icons.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colours.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
@@ -34,7 +34,10 @@
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="60" />
         </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <Image Source="../Resources/Images/chat.png" Height="48" Width="48" />
         <Label FontSize="26.67" Margin="12,0,0,0" Padding="1" Content="MessengR" Foreground="{DynamicResource AccentColorBrush}"/>
+        </StackPanel>
         <StackPanel Margin="0,0,5,0" Orientation="Horizontal" VerticalAlignment="Top" Grid.Column="1">
             <ItemsControl>
                 <ItemsControl.ItemsPanel>
