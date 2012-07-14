@@ -36,6 +36,7 @@ namespace MessengR.Account
                 context.Response.StatusCode = 401;
                 context.Response.Status = "401 Unauthorized";
                 context.Response.AddHeader("WWW-Authenticate", "Basic");
+                context.Response.End();
             }
         }
 
