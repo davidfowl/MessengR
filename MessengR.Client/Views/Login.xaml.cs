@@ -27,7 +27,8 @@ namespace MessengR.Client
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            AuthenticationResult authResult = LoginHelper.Login(ConfigurationManager.AppSettings["HostURL"], txtUsername.Text, txtPassword.Password);
+            string url = ConfigurationManager.AppSettings["HostURL"];
+            AuthenticationResult authResult = LoginHelper.Login(url, txtUsername.Text, txtPassword.Password);
             if(authResult.StatusCode == HttpStatusCode.OK)
             {
                 var mainWindow = new MainWindow();

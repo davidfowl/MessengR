@@ -29,10 +29,10 @@ namespace MessengR
                 foreach (var id in connections)
                 {
                     // Send a message to each user, and tell them who it came from
-                    Clients[id].addMessage(new
+                    Clients[id].addMessage(new Message
                     {
-                        from = Context.User.Identity.Name,
-                        value = message
+                        From = GetUser(Context.User.Identity.Name),
+                        Value = message
                     });
                 }
             }
@@ -43,20 +43,20 @@ namespace MessengR
             return _userConnections.ContainsKey(user);
         }
 
-        public IEnumerable<UserViewModel> GetUsers()
+        public IEnumerable<User> GetUsers()
         {
             return from MembershipUser u in Membership.GetAllUsers()
                    select GetUser(u);
         }
 
-        public UserViewModel GetUser(string userName)
+        public User GetUser(string userName)
         {
             return GetUser(Membership.GetUser(userName));
         }
 
-        private UserViewModel GetUser(MembershipUser u)
+        private User GetUser(MembershipUser u)
         {
-            return new UserViewModel
+            return new User
             {
                 Online = IsOnline(u.UserName),
                 Name = u.UserName,
@@ -83,7 +83,7 @@ namespace MessengR
             }
 
             // Tell everyone this user came online
-            return Clients.markOnline(Context.User.Identity.Name);
+            return Clients.markOnline(GetUser(Context.User.Identity.Name));
         }
 
         public Task Reconnect(IEnumerable<string> groups)
@@ -121,7 +121,7 @@ namespace MessengR
                     _userConnections.TryRemove(userName, out connections);
 
                     // If this is the last connection, mark the user offline
-                    return Clients.markOffline(userName);
+                    return Clients.markOffline(GetUser(userName));
                 }
             }
 
