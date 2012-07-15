@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -27,21 +28,28 @@ namespace MessengR.Client.View
 
         private void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            AuthenticationResult authResult = LoginHelper.Login(ConfigurationManager.AppSettings["HostURL"], txtUsername.Text, txtPassword.Password);
-            if(authResult.StatusCode == HttpStatusCode.OK)
+            string url = ConfigurationManager.AppSettings["HostURL"];
+
+            var uiScheduler = TaskScheduler.FromCurrentSynchronizationContext();
+            LoginHelper.LoginAsync(url, txtUsername.Text, txtPassword.Password).ContinueWith(task =>
             {
-                var mainWindow = new MainWindow();
-                mainWindow.Show();
-                this.Close();
-            }
-            else
-            {
-                if(!String.IsNullOrEmpty(authResult.Message))
+                AuthenticationResult authResult = task.Result;
+                if (authResult.StatusCode == HttpStatusCode.OK)
                 {
-                    txtError.Text = authResult.Message;
-                    txtError.Visibility = Visibility.Visible;
+                    var mainWindow = new MainWindow();
+                    mainWindow.Show();
+                    this.Close();
                 }
-            }
+                else
+                {
+                    if (!String.IsNullOrEmpty(authResult.Message))
+                    {
+                        txtError.Text = authResult.Message;
+                        txtError.Visibility = Visibility.Visible;
+                    }
+                }
+            }, 
+            uiScheduler);
         }
     }
 }

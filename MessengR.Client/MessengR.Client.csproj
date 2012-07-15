@@ -113,6 +113,9 @@
     <Compile Include="AuthenticationResult.cs" />
     <Compile Include="View\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
+    <Compile Include="Hubs\Chat.cs" />
+    <Compile Include="Views\Login.xaml.cs">
+      <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
     <Compile Include="LoginHelper.cs" />
     <Compile Include="MainWindow.xaml.cs">
