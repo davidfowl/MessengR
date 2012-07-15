@@ -1,9 +1,12 @@
-﻿<Controls:MetroWindow x:Class="MessengR.Client.Login"
+﻿<v:ViewBase x:Class="MessengR.Client.View.MainView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-        Title="Login" ShowIconOnTitleBar="True" Icon="../Resources/Images/chat.png" Height="300" Width="300">
-    <Window.Resources>
+        xmlns:v="clr-namespace:MessengR.Client.View"
+            xmlns:vm="clr-namespace:MessengR.Client.Model">
+    <v:ViewBase.DataContext>
+        <vm:UserModel/>
+    </v:ViewBase.DataContext>
+    <v:ViewBase.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Resources/Icons.xaml" />
@@ -17,21 +20,27 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
-    </Window.Resources>
-    <Grid>
+    </v:ViewBase.Resources>
+    <Grid Margin="0,0,5,0">
         <Grid.RowDefinitions>
-            <RowDefinition Height="50"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Label Grid.Row="0" FontSize="26.67" Margin="12,0,0,0" Padding="1" Content="MessengR" Foreground="{DynamicResource AccentColorBrush}"/>
-        <StackPanel Margin="12,0,0,0" Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Stretch">
-            <Label Content="Username"/>
-            <TextBox Name="txtUsername" Width="200" />
-            <Label Content="Password"/>
-            <PasswordBox Name="txtPassword" Width="200" />
-            <Button Name="btnLogin" Content="Login" Width="100" Height="40" Margin="0,5,0,0" Click="btnLogin_Click" />
-        </StackPanel>
-        <TextBlock Name="txtError" HorizontalAlignment="Center" TextWrapping="Wrap" Grid.Row="2" Foreground="Red" Visibility="Hidden"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="60" />
+        </Grid.ColumnDefinitions>
+        <v:HeaderView x:Name="Header"  Grid.Row="1" Grid.ColumnSpan="3"/>
+        <TabControl Grid.Row="2" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" Name="tabControl1" VerticalAlignment="Stretch">
+            <TabItem Name="tabItem1" Header="Conversations">
+                <v:ConversationListView x:Name="ConversationsList"/>
+            </TabItem>
+            <TabItem Name="tabItem2" Header="Contacts" >
+                <v:ContactListView x:Name="ContactsList"/>
+            </TabItem>
+        </TabControl>
     </Grid>
-</Controls:MetroWindow>
+</v:ViewBase>
