@@ -39,16 +39,16 @@ namespace MessengR.Client
                     if (response != null)
                     {
                         authResult.StatusCode = response.StatusCode;
-                        authResult.Message = ex.Message;
+                        authResult.Error = ex.Message;
                     }
                     else
                     {
-                        authResult.Message = ex.Message;
+                        authResult.Error = ex.Message;
                     }
                 }
                 catch (Exception ex)
                 {
-                    authResult.Message = ex.Message;
+                    authResult.Error = ex.Message;
                 }
 
                 tcs.SetResult(authResult);

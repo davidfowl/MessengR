@@ -1,0 +1,21 @@
+﻿<Controls:MetroWindow x:Class="MessengR.Client.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:v="clr-namespace:MessengR.Client.View"
+        xmlns:vm="clr-namespace:MessengR.Client.ViewModel"
+        Title="MessengR" ShowTitleBar="False" Height="525" Width="375" MinWidth="375" MinHeight="525">
+    <Window.DataContext>
+        <vm:MainViewModel />
+    </Window.DataContext>
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    <Grid>
+        <v:MainView x:Name="MainView" DataContext="{Binding User}"/>
+    </Grid>
+</Controls:MetroWindow>
