@@ -15,6 +15,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MahApps.Metro.Controls;
 using MessengR.Client.Hubs;
+using MessengR.Client.Model;
+using MessengR.Client.View;
+using MessengR.Client.ViewModel;
 using MessengR.Models;
 using SignalR.Client.Hubs;
 

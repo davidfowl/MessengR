@@ -9,13 +9,38 @@ using MessengR.Models;
 
 namespace MessengR.Client.Model
 {
-    public class UserModel : UserViewModel
+    public class UserModel : User, INotifyPropertyChanged
     {
-        public AuthenticationResult Authentication { get; set; }
+        public string Username
+        {
+            get { return base.Name; }
+            set
+            {
+                if (Name != value)
+                {
+                    Name = value;
+                    OnPropertyChanged("Username");
+                }
+            }
+        }
+
+        private AuthenticationResult _authenticationResult;
+        public AuthenticationResult Authentication
+        {
+            get { return _authenticationResult; }
+            set
+            {
+                _authenticationResult = value;
+                OnPropertyChanged("Authentication");
+            }
+        }
         public ICollectionView Conversations { get; set; }
         public ICollectionView Contacts { get; set; }
 
-        public UserModel(ObservableCollection<ConversationViewModel> conversations, ObservableCollection<UserViewModel> contacts)
+        public UserModel()
+        { }
+
+        public UserModel(ObservableCollection<Message> conversations, ObservableCollection<User> contacts)
         {
             Conversations = new ListCollectionView(conversations);
             //add handlers for when conversations change
@@ -23,8 +48,16 @@ namespace MessengR.Client.Model
             Contacts = new ListCollectionView(contacts);
             //add handlers for when contacts change
         }
-    }
 
-    public class ConversationViewModel
-    {}
+        #region INotifyPropertyChanged Members
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void OnPropertyChanged(string propertyName)
+        {
+            if (PropertyChanged != null)
+                PropertyChanged(this,
+                    new PropertyChangedEventArgs(propertyName));
+        }
+        #endregion
+
+    }
 }

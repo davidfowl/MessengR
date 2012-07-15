@@ -13,6 +13,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using MessengR.Client.Model;
+using MessengR.Client.ViewModel;
+using MessengR.Models;
 
 namespace MessengR.Client.View
 {
@@ -24,32 +27,6 @@ namespace MessengR.Client.View
         public LoginView()
         {
             InitializeComponent();
-        }
-
-        private void btnLogin_Click(object sender, RoutedEventArgs e)
-        {
-            string url = ConfigurationManager.AppSettings["HostURL"];
-
-            var uiScheduler = TaskScheduler.FromCurrentSynchronizationContext();
-            LoginHelper.LoginAsync(url, txtUsername.Text, txtPassword.Password).ContinueWith(task =>
-            {
-                AuthenticationResult authResult = task.Result;
-                if (authResult.StatusCode == HttpStatusCode.OK)
-                {
-                    var mainWindow = new MainWindow();
-                    mainWindow.Show();
-                    this.Close();
-                }
-                else
-                {
-                    if (!String.IsNullOrEmpty(authResult.Message))
-                    {
-                        txtError.Text = authResult.Message;
-                        txtError.Visibility = Visibility.Visible;
-                    }
-                }
-            }, 
-            uiScheduler);
         }
     }
 }
