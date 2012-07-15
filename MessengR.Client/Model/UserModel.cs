@@ -1,53 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Windows.Data;
+using MessengR.Models;
 
 namespace MessengR.Client.Model
 {
-    class UserModel : INotifyPropertyChanged
+    public class UserModel : UserViewModel
     {
-        private string _username;
-        private string _password;
-        private AuthenticationResult _result;
+        public AuthenticationResult Authentication { get; set; }
+        public ICollectionView Conversations { get; set; }
+        public ICollectionView Contacts { get; set; }
 
-        public string Username
+        public UserModel(ObservableCollection<ConversationViewModel> conversations, ObservableCollection<UserViewModel> contacts)
         {
-            get { return _username; }
-            set
-            {
-                _username = value;
-                if (PropertyChanged != null)
-                {
-                    OnPropertyChanged("Username");
-                }
-            }
-        }
+            Conversations = new ListCollectionView(conversations);
+            //add handlers for when conversations change
 
-        public string Password { get; set; }
-
-        public AuthenticationResult AuthenticationResult
-        {
-            get { return _result; }
-            set
-            {
-                _result = value;
-                if (PropertyChanged != null)
-                {
-                    OnPropertyChanged("AuthenticationResult");
-                }
-            }
+            Contacts = new ListCollectionView(contacts);
+            //add handlers for when contacts change
         }
-
-        #region INotifyPropertyChanged Members
-        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        private void OnPropertyChanged(string propertyName)
-        {
-            if (PropertyChanged != null)
-                PropertyChanged(this,
-                    new PropertyChangedEventArgs(propertyName));
-        }
-        #endregion
     }
+
+    public class ConversationViewModel
+    {}
 }

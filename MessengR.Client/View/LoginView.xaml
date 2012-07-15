@@ -31,10 +31,10 @@
         <Label Grid.Row="0" FontSize="26.67" Margin="12,0,0,0" Padding="1" Content="MessengR" Foreground="{DynamicResource AccentColorBrush}"/>
         <StackPanel Margin="12,0,0,0" Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Stretch" DataContext="{Binding Path=User, Mode=OneWayToSource}">
             <Label Content="Username"/>
-            <TextBox Name="txtUsername" Width="200" Text="{Binding Path=Username}" />
+            <TextBox Name="txtUsername" Width="200" Text="{Binding Path=Name}" />
             <Label Content="Password"/>
             <PasswordBox Name="txtPassword" Width="200"/>
-            <Button IsDefault="True" Name="btnLogin" Content="Login" Width="100" Height="40" Margin="0,5,0,0" Command="{Binding Path=Login}" />
+            <Button IsDefault="True" Name="btnLogin" Content="Login" Width="100" Height="40" Margin="0,5,0,0" />
         </StackPanel>
         <TextBlock Name="txtError" HorizontalAlignment="Center" TextWrapping="Wrap" Grid.Row="2" Foreground="Red" Visibility="Hidden" Text="{Binding Path=User.AuthenticationResult.Message, Mode=OneWay}"/>
     </Grid>
