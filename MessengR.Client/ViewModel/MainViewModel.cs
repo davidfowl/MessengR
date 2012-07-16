@@ -23,7 +23,7 @@ namespace MessengR.Client.ViewModel
 
         public UserModel User { get; set; }
 
-        public MainViewModel() {}
+        public MainViewModel() { }
 
         public MainViewModel(UserModel user)
         {
@@ -61,7 +61,10 @@ namespace MessengR.Client.ViewModel
                         }
                         else
                         {
-                            User.Contacts = new ObservableCollection<User>(getUserTask.Result);
+                            // Exclude current user from Contact list
+                            User.Contacts = new ObservableCollection<User>(
+                                getUserTask.Result.Where(u => !u.Name.Equals(User.Name, StringComparison.OrdinalIgnoreCase))
+                            );
                         }
                     });
                 }
