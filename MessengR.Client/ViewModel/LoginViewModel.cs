@@ -5,6 +5,7 @@ using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -67,27 +68,29 @@ namespace MessengR.Client.ViewModel
 
         private void OnLoginExecuted(object arg)
         {
+            var url = ConfigurationManager.AppSettings["HostURL"];
             //PasswordBox passed through as it is not bindable
             var password = arg as PasswordBox;
             if (User != null && password != null)
             {
-                var login = LoginHelper.LoginAsync(ConfigurationManager.AppSettings["HostURL"], User.Name,
-                                                   password.Password);
-                login.Wait();
-
-                var authResult = login.Result;
-                User.Authentication = authResult;
-                if (authResult.StatusCode == HttpStatusCode.OK)
-                {
-                    Error = string.Empty;
-                    var main = new MainWindow { DataContext = new MainViewModel { User = User } };
-                    main.Show();
-                    DialogResult = true;
-                }
-                else
-                {
-                    Error = authResult.Error;
-                }
+                var uiScheduler = TaskScheduler.FromCurrentSynchronizationContext();
+                LoginHelper.LoginAsync(url, User.Name, password.Password).ContinueWith(task =>
+                    {
+                        AuthenticationResult
+                            authResult =
+                                task.Result;
+                        if (authResult.StatusCode == HttpStatusCode.OK)
+                        {
+                            Error = string.Empty;
+                            var main = new MainWindow { DataContext = new MainViewModel { User = User } };
+                            main.Show();
+                            DialogResult = true;
+                        }
+                        else
+                        {
+                            Error = authResult.Error;
+                        }
+                    }, uiScheduler);
             }
         }
 
