@@ -11,6 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using MahApps.Metro.Controls;
 using MessengR.Client.Model;
+using MessengR.Client.View;
 using MessengR.Models;
 using Microsoft.Practices.Prism.Commands;
 
@@ -47,7 +48,7 @@ namespace MessengR.Client.ViewModel
         }
         public LoginViewModel()
         {
-            User = new UserModel() { Email = string.Empty, Name = string.Empty, Online = false, Username = string.Empty };
+            User = new UserModel() { Email = String.Empty, Name = String.Empty, Online = false, Username = String.Empty };
         }
 
         public event EventHandler<LoginEventArgs> LoginSuccessful;
@@ -76,14 +77,16 @@ namespace MessengR.Client.ViewModel
                 var uiScheduler = TaskScheduler.FromCurrentSynchronizationContext();
                 LoginHelper.LoginAsync(url, User.Name, password.Password).ContinueWith(task =>
                     {
-                        AuthenticationResult
-                            authResult =
-                                task.Result;
+                        AuthenticationResult authResult = task.Result;
                         if (authResult.StatusCode == HttpStatusCode.OK)
                         {
-                            Error = string.Empty;
-                            var main = new MainWindow { DataContext = new MainViewModel { User = User } };
+                            User.Authentication = authResult;
+                            Error = String.Empty;
+                            
+                            var viewModel = new MainViewModel(User);
+                            var main = new MainWindow() {DataContext = viewModel};
                             main.Show();
+
                             DialogResult = true;
                         }
                         else

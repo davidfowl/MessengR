@@ -35,10 +35,10 @@
         <v:HeaderView x:Name="Header"  Grid.Row="0" Grid.ColumnSpan="3"/>
         <TabControl Grid.Row="1" Grid.ColumnSpan="3" HorizontalAlignment="Stretch" Name="tabControl1" VerticalAlignment="Stretch">
             <TabItem Name="tabItem1" Header="Conversations">
-                <v:ConversationListView x:Name="ConversationsList"/>
+                <v:ConversationListView x:Name="ConversationsList" DataContext="{Binding Conversations}"/>
             </TabItem>
             <TabItem Name="tabItem2" Header="Contacts" >
-                <v:ContactListView x:Name="ContactsList"/>
+                <v:ContactListView x:Name="ContactsList" DataContext="{Binding Contacts}"/>
             </TabItem>
         </TabControl>
     </Grid>

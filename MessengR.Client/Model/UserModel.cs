@@ -34,19 +34,27 @@ namespace MessengR.Client.Model
                 OnPropertyChanged("Authentication");
             }
         }
-        public ICollectionView Conversations { get; set; }
-        public ICollectionView Contacts { get; set; }
 
-        public UserModel()
-        { }
-
-        public UserModel(ObservableCollection<Message> conversations, ObservableCollection<User> contacts)
+        private ObservableCollection<Message> _conversations;
+        public ObservableCollection<Message> Conversations
         {
-            Conversations = new ListCollectionView(conversations);
-            //add handlers for when conversations change
+            get { return _conversations; }
+            set
+            {
+                _conversations = value;
+                OnPropertyChanged("Conversations");
+            }
+        }
 
-            Contacts = new ListCollectionView(contacts);
-            //add handlers for when contacts change
+        private ObservableCollection<User> _contacts;
+        public ObservableCollection<User> Contacts
+        {
+            get { return _contacts; }
+            set
+            {
+                _contacts = value;
+                OnPropertyChanged("Contacts");
+            }
         }
 
         #region INotifyPropertyChanged Members
