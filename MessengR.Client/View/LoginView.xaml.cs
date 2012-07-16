@@ -27,6 +27,7 @@ namespace MessengR.Client.View
         public LoginView()
         {
             InitializeComponent();
+            txtUsername.Focus();
         }
     }
 }
