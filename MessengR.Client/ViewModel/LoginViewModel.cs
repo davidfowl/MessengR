@@ -80,7 +80,7 @@ namespace MessengR.Client.ViewModel
                 if (authResult.StatusCode == HttpStatusCode.OK)
                 {
                     Error = string.Empty;
-                    var main = new MainWindow {DataContext = new MainViewModel {User = User}};
+                    var main = new MainWindow { DataContext = new MainViewModel { User = User } };
                     main.Show();
                     DialogResult = true;
                 }
