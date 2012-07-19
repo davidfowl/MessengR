@@ -84,8 +84,12 @@
     </ApplicationDefinition>
     <Compile Include="Helpers\DialogCloser.cs" />
     <Compile Include="Model\UserModel.cs" />
+    <Compile Include="ViewModel\ChatViewModel.cs" />
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="View\ChatView.xaml.cs">
+      <DependentUpon>ChatView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\ContactListView.xaml.cs">
       <DependentUpon>ContactListView.xaml</DependentUpon>
     </Compile>
@@ -99,6 +103,14 @@
       <DependentUpon>MainView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ViewBase.cs" />
+    <Page Include="Resources\Styles\Default.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ChatView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\ContactListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

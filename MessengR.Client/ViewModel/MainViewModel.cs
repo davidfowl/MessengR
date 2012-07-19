@@ -7,9 +7,11 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Windows.Data;
+using System.Windows.Input;
 using MessengR.Client.Hubs;
 using MessengR.Client.Model;
 using MessengR.Models;
+using Microsoft.Practices.Prism.Commands;
 using SignalR.Client.Hubs;
 
 namespace MessengR.Client.ViewModel
@@ -22,6 +24,7 @@ namespace MessengR.Client.ViewModel
         private readonly SynchronizationContext _syncContext;
 
         public UserModel User { get; set; }
+
 
         public MainViewModel() { }
 
@@ -42,7 +45,7 @@ namespace MessengR.Client.ViewModel
 
             // Get a reference to the chat proxy
             _chat = new Chat(_connection);
-
+            
             // Start the connection
             _connection.Start().ContinueWith(task =>
             {
@@ -62,8 +65,8 @@ namespace MessengR.Client.ViewModel
                         else
                         {
                             // Exclude current user from Contact list
-                            User.Contacts = new ObservableCollection<User>(
-                                getUserTask.Result.Where(u => !u.Name.Equals(User.Name, StringComparison.OrdinalIgnoreCase))
+                            User.Contacts = new ObservableCollection<UserModel>(
+                                getUserTask.Result.Where(u => !u.Name.Equals(User.Name, StringComparison.OrdinalIgnoreCase)).Select(u => new UserModel(u))
                             );
                         }
                     });
@@ -85,11 +88,13 @@ namespace MessengR.Client.ViewModel
         private void OnUserOnline(User user)
         {
             // Mark user as online
+            User.UpdateUserStatus(user);
         }
 
         private void OnUserOffline(User user)
         {
             // Mark user as offline
+            User.UpdateUserStatus(user);
         }
 
     }

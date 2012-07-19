@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,16 +10,15 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using MessengR.Client.Model;
 
 namespace MessengR.Client.View
 {
     /// <summary>
-    /// Interaction logic for ContactListView.xaml
+    /// Interaction logic for ChatView.xaml
     /// </summary>
-    public partial class ContactListView
+    public partial class ChatView 
     {
-        public ContactListView()
+        public ChatView()
         {
             InitializeComponent();
         }

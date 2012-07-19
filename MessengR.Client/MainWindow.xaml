@@ -8,13 +8,6 @@
     <Window.DataContext>
         <vm:MainViewModel />
     </Window.DataContext>
-    <Window.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
-    </Window.Resources>
     <Grid>
         <v:MainView x:Name="MainView" DataContext="{Binding User}"/>
     </Grid>

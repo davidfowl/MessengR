@@ -1,0 +1,156 @@
+﻿<Controls:MetroWindow x:Class="MessengR.Client.View.ChatView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Behaviours="clr-namespace:MahApps.Metro.Behaviours;assembly=MahApps.Metro"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        Title="ChatView" ShowTitleBar="False" Height="500" Width="400">
+    <i:Interaction.Behaviors>
+        <Behaviours:BorderlessWindowBehavior ResizeWithGrip="False"/>
+    </i:Interaction.Behaviors>
+    <Controls:MetroWindow.Resources>
+        <ResourceDictionary>
+            <ControlTemplate x:Key="MetroTextBoxBaseControlTemplate" 
+          TargetType="{x:Type TextBoxBase}">
+                <Border x:Name="Bd" SnapsToDevicePixels="True" 
+          Background="{TemplateBinding Background}" 
+          BorderBrush="{TemplateBinding BorderBrush}"
+          BorderThickness="{TemplateBinding BorderThickness}" Opacity="0.5">
+                    <ScrollViewer x:Name="PART_ContentHost" 
+              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                </Border>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsEnabled" Value="False">
+                        <Setter Property="Background" TargetName="Bd" 
+            Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+                        <Setter Property="Foreground" 
+           Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+                    </Trigger>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Border.Opacity" Value="1"/>
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+        </ResourceDictionary>
+    </Controls:MetroWindow.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <Image Source="../Resources/Images/chat.png" Height="48" Width="48" />
+            <Label FontSize="26.67"
+                       Margin="12,0,0,0"
+                       Padding="0,2"
+                       HorizontalAlignment="Stretch" 
+                       VerticalAlignment="Stretch" 
+                       Content="{Binding Path=Name, FallbackValue=Henrik}" 
+                       Foreground="{DynamicResource BlackBrush}" Opacity="0.5"/>
+        </StackPanel>
+        <ScrollViewer Grid.Row="1">
+            <ListBox BorderThickness="0">
+                <ListBox.ItemContainerStyle>
+                    <Style TargetType="ListBoxItem">
+                        <!--<Setter Property="HorizontalContentAlignment" Value="Stretch"/>-->
+                    </Style>
+                </ListBox.ItemContainerStyle>
+                <!--<ListBox.ItemTemplate>
+                    <DataTemplate>-->
+                <!--<Button HorizontalContentAlignment="Stretch" Padding="0,0,0,2">
+                            <StackPanel>
+                                <Grid>-->
+                <ListBoxItem HorizontalAlignment="Stretch" HorizontalContentAlignment="Right">
+                    <StackPanel 
+                        Width="250" 
+                        MinHeight="50"
+                        HorizontalAlignment="Right"
+                        Margin="5"
+                        Background="{DynamicResource AccentColorBrush}">
+                        <TextBlock 
+                            Width="250"
+                            Text="SignalR Rocks!"
+                            Padding="5"
+                            TextWrapping="Wrap"
+                            Foreground="{DynamicResource WhiteBrush}"/>
+                        <TextBlock 
+                            HorizontalAlignment="Right" 
+                            Padding="5" 
+                            Text="{Binding Path=Received, FallbackValue=DateReceived}"
+                            Foreground="{DynamicResource WhiteBrush}"/>
+                    </StackPanel>
+                </ListBoxItem>
+                <!--</Grid>
+                            </StackPanel>
+                        </Button>-->
+                <!--</DataTemplate>
+                </ListBox.ItemTemplate>-->
+                <ListBoxItem HorizontalAlignment="Stretch">
+                    <StackPanel 
+                        Width="250" 
+                        MinHeight="50"
+                        HorizontalAlignment="Right"
+                        Margin="5"
+                        Background="{DynamicResource AccentColor4Brush}">
+                        <TextBlock 
+                            Width="250"
+                            Text="I know right!"
+                            Padding="5"
+                            TextWrapping="Wrap"
+                            Foreground="{DynamicResource WhiteBrush}"/>
+                        <TextBlock 
+                            HorizontalAlignment="Right" 
+                            Padding="5" 
+                            Text="{Binding Path=Received, FallbackValue=DateReceived}"
+                            Foreground="{DynamicResource WhiteBrush}"/>
+                        <StackPanel.Resources>
+                            <SolidColorBrush x:Key="AccentColor4Brush" Color="{DynamicResource AccentDarkColor}"/>
+                        </StackPanel.Resources>
+                    </StackPanel>
+                </ListBoxItem>
+            </ListBox>
+        </ScrollViewer>
+        <StackPanel Grid.Row="2" ClipToBounds="True">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBox 
+                    Grid.Column="0" 
+                    Text="" 
+                    Height="45"
+                    VerticalAlignment="Bottom"
+                    BorderBrush="{DynamicResource TextBoxBorderBrush}"
+                    Template="{DynamicResource MetroTextBoxBaseControlTemplate}"/>
+                <Button 
+                    ClipToBounds="True"
+                    Margin="0,0,-12,-12"
+                    Height="65"
+                    Width="65"
+                    Grid.Column="1" 
+                    Style="{DynamicResource MetroCircleButtonStyle}" 
+                    Foreground="{DynamicResource GrayBrush2}"
+                    ToolTip="Send message">
+                    <StackPanel Orientation="Horizontal">
+                        <Rectangle x:Name="SendIcon" Opacity="0.5" Margin="0,0,0,-5" Height="35" Width="45" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Rectangle.Resources>
+                                <SolidColorBrush x:Key="BlackBrush" Color="{DynamicResource Gray2}" />
+                            </Rectangle.Resources>
+                            <Rectangle.Fill>
+                                <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_message_send}" />
+                            </Rectangle.Fill>
+                        </Rectangle>
+                    </StackPanel>
+                </Button>
+            </Grid>
+        </StackPanel>
+
+    </Grid>
+</Controls:MetroWindow>
