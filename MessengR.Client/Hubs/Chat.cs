@@ -57,5 +57,10 @@ namespace MessengR.Client.Hubs
         {
             return _chat.Invoke<User>("GetUser", userName);
         }
+
+        public Task<Message> SendMessage(string userName, string message)
+        {
+            return _chat.Invoke<Message>("Send", userName, message);
+        }
     }
 }

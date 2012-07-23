@@ -3,8 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:viewModel="clr-namespace:MessengR.Client.ViewModel"
-        xmlns:helper="clr-namespace:MessengR.Client.Helpers"
-        helper:DialogCloser.DialogResult="{Binding DialogResult}"
+        xmlns:w="clr-namespace:MessengR.Client.Common"
         Title="Login" ShowIconOnTitleBar="True" ShowMaxRestoreButton="False" Icon="../Resources/Images/chat.png" Height="300" Width="300">
     <Window.DataContext>
         <viewModel:LoginViewModel />
@@ -17,22 +16,29 @@
             <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
         <Label Grid.Row="0" FontSize="26.67" Margin="12,0,0,0" Padding="1" Content="MessengR" Foreground="{DynamicResource AccentColorBrush}"/>
-        <StackPanel Margin="12,0,0,0" Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Stretch" DataContext="{Binding Path=User, Mode=TwoWay}">
-            <Label Content="Username"/>
+        <StackPanel 
+            Margin="12,0,0,0" 
+            Grid.Row="1" 
+            Orientation="Vertical" 
+            HorizontalAlignment="Stretch">
+            <Label Content="Name"/>
             <TextBox Name="txtUsername" Width="200" Text="{Binding Path=Name, Mode=TwoWay}" />
             <Label Content="Password"/>
-            <PasswordBox Name="txtPassword" Width="200"/>
+            <PasswordBox x:Name="txtPassword"
+                 w:PasswordHelper.Attach="True"
+                 w:PasswordHelper.Password="{Binding Path=Password, Mode=TwoWay}" 
+                Width="200">
+            </PasswordBox>
         </StackPanel>
         <Button 
             Grid.Row="2"
-                Command="{Binding Path=LoginCommand}"
-            CommandParameter="{Binding ElementName=txtPassword}"
+            Command="{Binding Path=LoginCommand}"
             Style="{DynamicResource SquareButtonStyle}"
-                IsDefault="True" 
-                Name="btnLogin" 
-                Content="Login" 
-                Width="100" 
-                Height="30" />
+            IsDefault="True" 
+            Name="btnLogin" 
+            Content="Login" 
+            Width="100" 
+            Height="30" />
         <TextBlock Name="txtError" HorizontalAlignment="Center" TextWrapping="Wrap" Grid.Row="3" Foreground="Red" Text="{Binding Path=Error, Mode=TwoWay}"/>
     </Grid>
 </Controls:MetroWindow>

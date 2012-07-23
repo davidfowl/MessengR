@@ -1,4 +1,7 @@
-﻿namespace MessengR.Models
+﻿using System.Collections.ObjectModel;
+using System.Net;
+
+namespace MessengR.Models
 {
     public class User
     {

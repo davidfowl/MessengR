@@ -8,7 +8,38 @@
     <Window.DataContext>
         <vm:MainViewModel />
     </Window.DataContext>
-    <Grid>
-        <v:MainView x:Name="MainView" DataContext="{Binding User}"/>
+    <Window.Resources>
+        <DataTemplate x:Key="ConversationListTemplate">
+            <v:ConversationListView/>
+        </DataTemplate>
+        <DataTemplate x:Key="ContactListTemplate">
+            <v:ContactListView/>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid Margin="0,0,5,0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="60" />
+        </Grid.ColumnDefinitions>
+        <v:HeaderView x:Name="Header"  Grid.Row="0" Grid.ColumnSpan="3"/>
+        <StackPanel Grid.Row="1" Orientation="Horizontal">
+            <Label Content="Logged in as:"/>
+            <Label Content="{Binding Me.User.Name}"/>
+        </StackPanel>
+        <TabControl Grid.Row="2" HorizontalAlignment="Stretch" Name="tabControl1" VerticalAlignment="Stretch" Grid.ColumnSpan="3">
+            <TabItem Name="tabItem1" Header="Conversations">
+                <ContentControl Content="{Binding Conversations}" ContentTemplate="{StaticResource ConversationListTemplate}"/>
+            </TabItem>
+            <TabItem Name="tabItem2" Header="Contacts">
+                <ContentControl Content="{Binding Contacts}" ContentTemplate="{StaticResource ContactListTemplate}"/>
+            </TabItem>
+        </TabControl>
     </Grid>
+
 </Controls:MetroWindow>
