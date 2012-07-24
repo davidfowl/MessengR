@@ -91,7 +91,6 @@
     <Compile Include="Common\CommandBase.cs" />
     <Compile Include="Common\PasswordHelper.cs" />
     <Compile Include="Common\ViewModelBase.cs" />
-    <Compile Include="Hubs\ChatFactory.cs" />
     <Compile Include="Interface\IChatDialog.cs" />
     <Compile Include="Interface\IDialog.cs" />
     <Compile Include="Interface\ILoginDialog.cs" />
