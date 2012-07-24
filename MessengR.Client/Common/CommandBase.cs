@@ -6,7 +6,7 @@ using System.Windows.Input;
 
 namespace MessengR.Client.Common
 {
-    class CommandBase : ICommand
+    public class CommandBase : ICommand
     {
         private readonly Action<object> _execute;
         private readonly Predicate<object> _canExecute;

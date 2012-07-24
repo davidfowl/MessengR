@@ -7,7 +7,7 @@ using Microsoft.Practices.Unity;
 
 namespace MessengR.Client.Service
 {
-    class UnityServiceLocator : IServiceLocator
+    public class UnityServiceLocator : IServiceLocator
     {
         private UnityContainer _container;
 

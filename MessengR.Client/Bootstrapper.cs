@@ -8,7 +8,7 @@ using MessengR.Client.View;
 
 namespace MessengR.Client
 {
-    class Bootstrapper
+    public class Bootstrapper
     {
         public static void Initialize()
         {

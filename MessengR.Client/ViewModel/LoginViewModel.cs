@@ -7,7 +7,7 @@ using MessengR.Client.Common;
 
 namespace MessengR.Client.ViewModel
 {
-    internal class LoginViewModel : ViewModelBase
+    public class LoginViewModel : ViewModelBase
     {
         public event EventHandler LoginSuccess;
 
