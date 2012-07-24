@@ -6,7 +6,6 @@ using System.Net;
 using System.Windows.Input;
 
 using MessengR.Client.Common;
-using MessengR.Client.Events;
 using MessengR.Client.Hubs;
 using MessengR.Client.Interface;
 using MessengR.Client.Service;
