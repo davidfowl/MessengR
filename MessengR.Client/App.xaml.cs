@@ -4,7 +4,10 @@ using System.Configuration;
 using System.Data;
 using System.Linq;
 using System.Windows;
+using MessengR.Client.Interface;
 using MessengR.Client.View;
+using MessengR.Client.ViewModel;
+using MessengR.Client.Service;
 
 namespace MessengR.Client
 {
@@ -13,10 +16,16 @@ namespace MessengR.Client
     /// </summary>
     public partial class App : Application
     {
-        private void Application_Startup(object sender, StartupEventArgs e)
+        protected override void OnStartup(StartupEventArgs e)
         {
-            this.MainWindow = new LoginView();
-            this.MainWindow.ShowDialog();
+            base.OnStartup(e);
+            Bootstrapper.Initialize();
+
+            var loginViewModel = new LoginViewModel();
+            var loginDialog = ServiceProvider.Instance.Get<ILoginDialog>();
+            loginDialog.BindViewModel(loginViewModel);
+            loginDialog.Show();
+
         }
     }
 }
