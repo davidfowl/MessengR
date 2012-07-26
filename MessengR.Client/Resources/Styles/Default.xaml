@@ -21,4 +21,6 @@
             </Trigger>
         </ControlTemplate.Triggers>
     </ControlTemplate>
+    <SolidColorBrush x:Key="DisabledForegroundBrush" Color="{DynamicResource Gray6}" />
+    <SolidColorBrush x:Key="AccentDarkColorBrush" Color="{DynamicResource AccentDarkColor}"/>
 </ResourceDictionary>
