@@ -1,0 +1,100 @@
+﻿<Controls:MetroWindow x:Class="MessengR.Client.View.ChatView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:m="clr-namespace:MessengR.Client.ViewModel"
+        xmlns:Behaviours="clr-namespace:MahApps.Metro.Behaviours;assembly=MahApps.Metro"
+        xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        Title="ChatView" ShowTitleBar="False" Height="500" Width="400">
+    <i:Interaction.Behaviors>
+        <Behaviours:BorderlessWindowBehavior ResizeWithGrip="False"/>
+    </i:Interaction.Behaviors>
+    <Window.DataContext>
+        <m:ChatSessionViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal">
+            <Image Source="../Resources/Images/chat.png" Height="48" Width="48" />
+            <Label FontSize="26.67"
+                       Margin="12,0,0,0"
+                       Padding="0,2"
+                       HorizontalAlignment="Stretch" 
+                       VerticalAlignment="Stretch" 
+                       Content="{Binding Path=User.Name, FallbackValue=Name}" 
+                       Foreground="{DynamicResource BlackBrush}" Opacity="0.5"/>
+        </StackPanel>
+        <ScrollViewer Grid.Row="1">
+            <ListBox BorderThickness="0" ItemsSource="{Binding Path=Conversation}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel 
+                        Width="250" 
+                        MinHeight="50"
+                        HorizontalAlignment="Right"
+                        Margin="5"
+                        Background="{DynamicResource AccentColorBrush}">
+                            <TextBlock 
+                            Width="250"
+                            Text="{Binding Path=Value}"
+                            Padding="5"
+                            TextWrapping="Wrap"
+                            Foreground="{DynamicResource WhiteBrush}"/>
+                            <TextBlock 
+                            HorizontalAlignment="Right" 
+                            Padding="5" 
+                            Text="Received"
+                            Foreground="{DynamicResource WhiteBrush}"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </ScrollViewer>
+        <StackPanel Grid.Row="2" ClipToBounds="True">
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <TextBox 
+                    x:Name="Message"
+                    Text="{Binding Message, Mode=TwoWay}"
+                    Grid.Column="0" 
+                    Height="45"
+                    VerticalAlignment="Bottom"
+                    BorderBrush="{DynamicResource TextBoxBorderBrush}"
+                    Template="{DynamicResource MetroTextBoxBaseControlTemplate}"/>
+                <Button 
+                    Command="{Binding Path=SendMessageCommand}"
+                    ClipToBounds="True"
+                    Margin="0,0,-12,-12"
+                    Height="65"
+                    Width="65"
+                    Grid.Column="1" 
+                    Style="{DynamicResource MetroCircleButtonStyle}" 
+                    Foreground="{DynamicResource GrayBrush2}"
+                    ToolTip="Send message">
+                    <StackPanel Orientation="Horizontal">
+                        <Rectangle x:Name="SendIcon" Opacity="0.5" Margin="0,0,0,-5" Height="35" Width="45" VerticalAlignment="Center" HorizontalAlignment="Center">
+                            <Rectangle.Resources>
+                                <SolidColorBrush x:Key="BlackBrush" Color="{DynamicResource Gray2}" />
+                            </Rectangle.Resources>
+                            <Rectangle.Fill>
+                                <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_message_send}" />
+                            </Rectangle.Fill>
+                        </Rectangle>
+                    </StackPanel>
+                </Button>
+            </Grid>
+        </StackPanel>
+
+    </Grid>
+</Controls:MetroWindow>

@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
-using System.Net;
 using System.Text;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -12,19 +11,18 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using MessengR.Client.Hubs;
-using MessengR.Models;
-using SignalR.Client.Hubs;
+using MessengR.Client.Interface;
+using MessengR.Client.ViewModel;
+using Microsoft.Practices.Prism.Commands;
 
 namespace MessengR.Client.View
 {
     /// <summary>
-    /// Interaction logic for MainView.xaml
+    /// Interaction logic for ChatView.xaml
     /// </summary>
-    public partial class MainView
+    public partial class ChatView
     {
-
-        public MainView()
+        public ChatView()
         {
             InitializeComponent();
         }

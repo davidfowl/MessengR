@@ -1,73 +1,86 @@
 ﻿<v:ViewBase x:Class="MessengR.Client.View.ContactListView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:v="clr-namespace:MessengR.Client.View">
+        xmlns:v="clr-namespace:MessengR.Client.View"
+        xmlns:vm="clr-namepsace:MessengR.Client.ViewModel">
     <v:ViewBase.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="../Resources/Icons.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colours.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedTabControl.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.AnimatedSingleRowTabControl.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/FlatButton.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-        </ResourceDictionary>
+        <CollectionViewSource x:Key="usersByStatus" Source="{Binding}">
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="Status"/>
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
     </v:ViewBase.Resources>
     <Grid>
         <ScrollViewer HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <ListBox BorderThickness="0" ItemsSource="{Binding}">
-                <ListBox.ItemContainerStyle>
-                    <Style TargetType="ListBoxItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-                    </Style>
-                </ListBox.ItemContainerStyle>
-                <ListBox.ItemTemplate>
+            <ListView x:Name="ContactList" BorderThickness="0" ItemsSource="{Binding  Source={StaticResource usersByStatus}}">
+                <ListView.GroupStyle>
+                    <GroupStyle>
+                        <GroupStyle.ContainerStyle>
+                            <Style TargetType="{x:Type GroupItem}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type GroupItem}">
+                                            <Expander IsExpanded="True">
+                                                <Expander.Header>
+                                                    <DockPanel>
+                                                        <TextBlock FontWeight="Bold" FontSize="15" Text="{Binding Name}"/>
+                                                        <TextBlock FontWeight="Bold" FontSize="15" Text=" ("/>
+                                                        <TextBlock FontWeight="Bold" FontSize="15" Text="{Binding ItemCount}"/>
+                                                        <TextBlock FontWeight="Bold" FontSize="15" Text=")"/>
+                                                    </DockPanel>
+                                                </Expander.Header>
+                                                <ItemsPresenter/>
+                                            </Expander>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </GroupStyle.ContainerStyle>
+                    </GroupStyle>
+                </ListView.GroupStyle>
+                <ListView.ItemTemplate>
                     <DataTemplate>
                         <Button HorizontalContentAlignment="Stretch" Padding="0,0,0,2">
+                            <Button.InputBindings>
+                                <MouseBinding Gesture="LeftDoubleClick" Command="{Binding Path=ChatCommand}" CommandParameter="{Binding}" />
+                            </Button.InputBindings>
                             <StackPanel>
                                 <Grid>
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="30"/>
                                         <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="60"/>
                                         <ColumnDefinition Width="245"/>
                                     </Grid.ColumnDefinitions>
-                                    <Rectangle Grid.RowSpan="2" Grid.Column="0" Width="50" Height="50" HorizontalAlignment="Left" VerticalAlignment="Top">
+                                    <Rectangle Grid.Column="0" Width="50" Height="50" HorizontalAlignment="Left" VerticalAlignment="Top">
                                         <Rectangle.Resources>
-                                            <SolidColorBrush x:Key="BlackBrush" Color="White" />
+                                            <SolidColorBrush x:Key="BlackBrush" Color="White"/>
                                         </Rectangle.Resources>
                                         <Rectangle.Fill>
                                             <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_user}" />
                                         </Rectangle.Fill>
                                     </Rectangle>
                                     <Label 
-                                            Padding="0,2"
-                                            Grid.Row="0" 
-                                            Grid.Column="1" 
-                                            HorizontalAlignment="Stretch" 
-                                            VerticalAlignment="Stretch" 
-                                            Content="{Binding Path=Name, FallbackValue=Name}" 
-                                            Foreground="{DynamicResource AccentColorBrush}" />
-                                    <TextBlock 
-                                            Grid.Row="1" 
-                                            Grid.Column="1" 
-                                            HorizontalAlignment="Stretch" 
-                                            VerticalAlignment="Stretch" 
-                                            Text="SignalR Rocks!"
-                                            TextWrapping="Wrap"
-                                            />
+                                        FontSize="26.67"
+                                        Padding="0,2"
+                                        Grid.Row="0" 
+                                        Grid.Column="1" 
+                                        HorizontalAlignment="Stretch" 
+                                        VerticalAlignment="Stretch" 
+                                        Content="{Binding Path=User.Name, FallbackValue=Name}" 
+                                        Foreground="{DynamicResource AccentColorBrush}" />
                                 </Grid>
                             </StackPanel>
                         </Button>
                     </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                </ListView.ItemTemplate>
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Control.HorizontalContentAlignment" Value="Stretch"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+            </ListView>
         </ScrollViewer>
     </Grid>
 </v:ViewBase>
