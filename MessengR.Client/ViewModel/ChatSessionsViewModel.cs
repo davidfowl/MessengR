@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using MessengR.Client.Common;
+using MessengR.Client.Interface;
+using MessengR.Client.Service;
 using MessengR.Client.View;
 using MessengR.Models;
 
@@ -19,7 +21,7 @@ namespace MessengR.Client.ViewModel
             var viewModel = new ChatSessionViewModel(user);
             viewModel.Initiator = initiator;
             viewModel.SendMessage += OnSendMessage;
-            var chatView = new ChatViewDialog();
+            var chatView = ServiceProvider.Instance.Get<IChatDialog>();
             chatView.BindViewModel(viewModel);
             chatView.Show();
             _chatSessions.Add(viewModel);
