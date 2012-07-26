@@ -15,7 +15,7 @@ namespace MessengR.Client.ViewModel
 {
     public class ContactViewModel : ViewModelBase
     {
-        public event EventHandler OpenChatEvent;
+        public event EventHandler<OpenChatEventArgs> OpenChatEvent;
 
         private readonly ContactViewModel _parent;
 
@@ -62,6 +62,7 @@ namespace MessengR.Client.ViewModel
             }
         }
 
+        #region ctors
         public ContactViewModel()
         {
         }
@@ -80,7 +81,7 @@ namespace MessengR.Client.ViewModel
             Status = user.Online ? "Online" : "Offline";
             _parent = parent;
         }
-
+        #endregion
 
         private ICommand _chatCommand;
         public ICommand ChatCommand
@@ -97,9 +98,9 @@ namespace MessengR.Client.ViewModel
 
         private void OpenChat()
         {
-            if(_parent.OpenChatEvent != null)
+            if (_parent.OpenChatEvent != null)
             {
-                _parent.OpenChatEvent(this, null);
+                _parent.OpenChatEvent(this, new OpenChatEventArgs(this.User));
             }
         }
 
