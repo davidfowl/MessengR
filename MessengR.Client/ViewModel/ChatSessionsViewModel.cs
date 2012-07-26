@@ -40,7 +40,10 @@ namespace MessengR.Client.ViewModel
 
         private void OnSendMessage(object sender, ChatSessionEventArgs e)
         {
-            SendMessage(sender, e);
+            if (e != null)
+            {
+                SendMessage(sender, e);
+            }
         }
     }
 }
