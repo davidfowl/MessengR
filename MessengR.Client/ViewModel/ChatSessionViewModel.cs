@@ -11,10 +11,10 @@ namespace MessengR.Client.ViewModel
 {
     public class ChatSessionViewModel : ViewModelBase
     {
-        public event EventHandler SendMessage;
+        public event EventHandler<ChatSessionEventArgs> SendMessage;
 
         public User Initiator { get; set; }
-        public User User { get; set; }
+        public User Contact { get; set; }
         public ObservableCollection<Message> Conversation { get; set; }
 
         private string _message;
@@ -38,17 +38,17 @@ namespace MessengR.Client.ViewModel
 
         public ChatSessionViewModel(User user)
         {
-            User = user;
+            Contact = user;
             Conversation = new ObservableCollection<Message>();
         }
 
 
         public void MessageReceived(Message message)
         {
+            message.DateReceived = DateTime.Now;
             Conversation.Add(message);
         }
 
-        #region Current code that could be useful
         private ICommand _sendMessageCommand;
         public ICommand SendMessageCommand
         {
@@ -64,8 +64,8 @@ namespace MessengR.Client.ViewModel
 
         public void Send()
         {
-            var message = new Message { From = Initiator, Value = Message };
-            SendMessage(this, null);
+            SendMessage(this, new ChatSessionEventArgs(this.Contact, this.Message));
+            var message = new Message { From = Initiator, Value = Message, IsMine = true, DateReceived = DateTime.Now };
             Conversation.Add(message);
             Message = String.Empty;
         }
@@ -74,6 +74,5 @@ namespace MessengR.Client.ViewModel
         {
             return !String.IsNullOrEmpty(Message);
         }
-        #endregion
     }
 }
