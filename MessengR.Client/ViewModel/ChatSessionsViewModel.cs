@@ -16,9 +16,9 @@ namespace MessengR.Client.ViewModel
         public event EventHandler<ChatSessionEventArgs> SendMessage;
         private readonly ObservableCollection<ChatSessionViewModel> _chatSessions = new ObservableCollection<ChatSessionViewModel>();
 
-        public void StartNewSession(User user, User initiator)
+        public void StartNewSession(User contact, User initiator)
         {
-            var viewModel = new ChatSessionViewModel(user);
+            var viewModel = new ChatSessionViewModel(contact);
             viewModel.Initiator = initiator;
             viewModel.SendMessage += OnSendMessage;
             var chatView = ServiceProvider.Instance.Get<IChatDialog>();
