@@ -15,11 +15,9 @@ namespace MessengR.Client.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
-        #region SignalR Objects
         private HubConnection _connection;
         private Chat _chat;
         private readonly SynchronizationContext _syncContext;
-        #endregion
 
         private string _name;
         public string Name
@@ -97,22 +95,24 @@ namespace MessengR.Client.ViewModel
                 else
                 {
                     // Get a list of users and add it to the view model
-                    _chat.GetUsers().ContinueWith(getUserTask =>
+                    _chat.GetUsers().ContinueWith(getUsersTask =>
                     {
-                        if (getUserTask.IsFaulted)
+                        if (getUsersTask.IsFaulted)
                         {
                             // Show a connection error here
                         }
                         else
                         {
-                            Me = new ContactViewModel(getUserTask.Result.Single(u => u.Name == Name));
+                            var result = getUsersTask.Result;
+                            Me = new ContactViewModel(result.Single(u => u.Name == Name));
                             Me.OpenChatEvent += OnOpenChat;
-                            //Me.SendMessageEvent +=
 
                             // Exclude current user from Contact list
-                            Contacts = new ObservableCollection<ContactViewModel>(
-                                getUserTask.Result.Where(u => !u.Name.Equals(Me.User.Name, StringComparison.OrdinalIgnoreCase)).Select(u => new ContactViewModel(u, Me))
-                            );
+                            var contacts = from User user in result
+                                           where !user.Name.Equals(Me.User.Name, StringComparison.OrdinalIgnoreCase)
+                                           select new ContactViewModel(user, Me);
+
+                            Contacts = new ObservableCollection<ContactViewModel>(contacts);
                         }
                     });
                 }
@@ -139,33 +139,33 @@ namespace MessengR.Client.ViewModel
                 var contact = Contacts.SingleOrDefault(u => u.User.Name == user.Name);
                 if (contact != null)
                 {
+                    //For the contact list to register that the contact has changed status,
+                    //have to remove and re-add the contact again
                     Contacts.Remove(contact);
                     Contacts.Add(new ContactViewModel(user, Me));
                 }
             }
         }
 
-        public void OnOpenChat(object sender, EventArgs e)
+        public void OnOpenChat(object sender, OpenChatEventArgs e)
         {
-            if (sender is ContactViewModel)
+            if (e.Contact != null)
             {
-                _chatSessions.StartNewSession((sender as ContactViewModel).User, Me.User);
+                //Start a new chat session with the selected contact
+                _chatSessions.StartNewSession(e.Contact, Me.User);
             }
         }
 
-        void OnSendMessage(object sender, EventArgs e)
+        void OnSendMessage(object sender, ChatSessionEventArgs e)
         {
-            if (sender is ChatSessionViewModel)
+            if (e.Contact != null && !String.IsNullOrEmpty(e.Message))
             {
-                var chat = sender as ChatSessionViewModel;
-                _chat.SendMessage(chat.User.Name, chat.Message).ContinueWith(sendMessage =>
+                //Send a message to the contact in the chat session
+                _chat.SendMessage(e.Contact.Name, e.Message).ContinueWith(sendMessage =>
                 {
                     if (sendMessage.IsFaulted)
                     {
                         //display error
-                    }
-                    else
-                    {
                     }
                 });
             }

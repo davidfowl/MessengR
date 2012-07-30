@@ -5,7 +5,7 @@
         xmlns:m="clr-namespace:MessengR.Client.ViewModel"
         xmlns:Behaviours="clr-namespace:MahApps.Metro.Behaviours;assembly=MahApps.Metro"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-        Title="ChatView" ShowTitleBar="False" Height="500" Width="400">
+        Title="ChatView" Icon="../Resources/Images/chat.png" ShowTitleBar="False" Height="500" Width="400">
     <i:Interaction.Behaviors>
         <Behaviours:BorderlessWindowBehavior ResizeWithGrip="False"/>
     </i:Interaction.Behaviors>
@@ -25,19 +25,18 @@
                        Padding="0,2"
                        HorizontalAlignment="Stretch" 
                        VerticalAlignment="Stretch" 
-                       Content="{Binding Path=User.Name, FallbackValue=Name}" 
+                       Content="{Binding Path=Contact.Name, FallbackValue=Name}" 
                        Foreground="{DynamicResource BlackBrush}" Opacity="0.5"/>
         </StackPanel>
-        <ScrollViewer Grid.Row="1">
-            <ListBox BorderThickness="0" ItemsSource="{Binding Path=Conversation}">
-                <ListBox.ItemTemplate>
+        <ScrollViewer Grid.Row="1" Margin="12,0,0,0">
+            <ListView BorderThickness="0" ItemsSource="{Binding Path=Conversation}">
+                <ListView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel 
-                        Width="250" 
-                        MinHeight="50"
-                        HorizontalAlignment="Right"
-                        Margin="5"
-                        Background="{DynamicResource AccentColorBrush}">
+                            Width="250" 
+                            MinHeight="50"
+                            HorizontalAlignment="Right"
+                            Margin="5">
                             <TextBlock 
                             Width="250"
                             Text="{Binding Path=Value}"
@@ -45,17 +44,29 @@
                             TextWrapping="Wrap"
                             Foreground="{DynamicResource WhiteBrush}"/>
                             <TextBlock 
-                            HorizontalAlignment="Right" 
-                            Padding="5" 
-                            Text="Received"
-                            Foreground="{DynamicResource WhiteBrush}"/>
+                                HorizontalAlignment="Right" 
+                                Padding="5" 
+                                Text="{Binding DateReceived}"
+                                Foreground="{DynamicResource WhiteBrush}"/>
                         </StackPanel>
                     </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListBox>
+                </ListView.ItemTemplate>
+                <ListView.ItemContainerStyle>
+                    <Style>
+                        <Setter Property="Control.Margin" Value="0,2"/>
+                        <Setter Property="Control.HorizontalAlignment" Value="Right"/>
+                        <Setter Property="StackPanel.Background" Value="{DynamicResource AccentColorBrush}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsMine}" Value="false">
+                                <Setter Property="StackPanel.Background" Value="{DynamicResource AccentDarkColorBrush}"/>
+                                <Setter Property="StackPanel.HorizontalAlignment" Value="Left"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListView.ItemContainerStyle>
+            </ListView>
         </ScrollViewer>
         <StackPanel Grid.Row="2" ClipToBounds="True">
-
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50"/>
@@ -66,7 +77,7 @@
                 </Grid.ColumnDefinitions>
                 <TextBox 
                     x:Name="Message"
-                    Text="{Binding Message, Mode=TwoWay}"
+                    Text="{Binding Message, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                     Grid.Column="0" 
                     Height="45"
                     VerticalAlignment="Bottom"
