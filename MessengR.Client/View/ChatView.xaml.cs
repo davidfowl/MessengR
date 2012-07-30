@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -25,6 +26,17 @@ namespace MessengR.Client.View
         public ChatView()
         {
             InitializeComponent();
+            //INotifyCollectionChanged interface which contains the event handler is explicitly implemented, 
+            //which means you have to first cast the ItemCollection before the event handler can be used
+            ((INotifyCollectionChanged)ConversationList.Items).CollectionChanged += ChatView_CollectionChanged;
+        }
+
+        void ChatView_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                ConversationList.ScrollIntoView(e.NewItems[0]);
+            }
         }
     }
 }
