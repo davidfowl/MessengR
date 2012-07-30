@@ -12,15 +12,7 @@ namespace MessengR
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            var allUsers = Membership.GetAllUsers();
-            users.DataSource = from MembershipUser u in allUsers
-                               let online = Chat.IsOnline(u.UserName)
-                               select new
-                               {
-                                   Name = u.UserName,
-                                   Online = online
-                               };
-            users.DataBind();
+
         }
     }
 }

@@ -6,41 +6,21 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
-<% if (!Request.IsAuthenticated) return; %>
-
-    <asp:ScriptManager runat="server" ID="sm" />
-    <asp:UpdatePanel runat="server" ID="myPanel">
-        <ContentTemplate>
-            <ul>
-            <asp:Repeater runat="server" ID="users">
-                <ItemTemplate>
-                    <li>
-                        <%# (bool)Eval("Online") ? "<span class=\"icon icon-online\" />" : "<span class=\"icon icon-offline\" />"%> <%# Eval("Name") %>
-                    </li>
-                </ItemTemplate>
-            </asp:Repeater>
-            </ul>
-        </ContentTemplate>
-    </asp:UpdatePanel>
-    
-    <script type="text/javascript">
-        var chat = $.connection.chat,
-            conversations = {};
-
-        function updateRepeater() {
-            __doPostBack('<%= myPanel.UniqueID %>', '');
-        }
-
-        chat.addMessage = function (message) {
-            
-        };
-
-        // Since we're just rebinding the repeader, force a refresh
-        chat.markOnline = updateRepeater;
-
-        chat.markOffline = updateRepeater;
-
-        $.connection.hub.start().done(updateRepeater);
-
-    </script>
+<% if (!Request.IsAuthenticated)
+   {
+       %>
+       <h2>Sign up</h2> 
+       <ol>
+           <li><a href="~/Account/Register.aspx" runat="server">Sign up!</a></li>
+           <li>Get the client from <a href="https://github.com/davidfowl/MessengR">github</a></li>
+       </ol>
+       <%
+   }
+   else
+   {
+       %> 
+           Get the client from <a href="https://github.com/davidfowl/MessengR">github</a>
+       <%
+   }
+%>
 </asp:Content>

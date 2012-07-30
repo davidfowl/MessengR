@@ -14,9 +14,9 @@
         <div class="header">
             <div class="title">
                 <h1>
-                    My ASP.NET Application
+                    MessengR
                 </h1>
-            </div>
+            </div>            
             <div class="loginDisplay">
                 <asp:LoginView ID="HeadLoginView" runat="server" EnableViewState="false">
                     <AnonymousTemplate>
@@ -37,6 +37,7 @@
             </div>
         </div>
         <div class="main">
+            <a href="https://github.com/davidfowl/MessengR" class="forkme" target="_blank"></a>
             <asp:ContentPlaceHolder ID="MainContent" runat="server"/>
         </div>
         <div class="clear">
