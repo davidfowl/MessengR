@@ -6,6 +6,17 @@
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
+<% 
+    
+var url = Regex.Replace(Request.Url.AbsoluteUri, @"Default\.aspx", "", RegexOptions.IgnoreCase);
+var config = String.Format(@"<?xml version=""1.0"" encoding=""utf-8"" ?>
+<configuration>
+  <appSettings>
+    <add key=""HostUrl"" value=""{0}""/>
+  </appSettings>
+</configuration>""", url);
+%>
+
 <% if (!Request.IsAuthenticated)
    {
        %>
@@ -13,13 +24,23 @@
        <ol>
            <li><a href="~/Account/Register.aspx" runat="server">Sign up!</a></li>
            <li>Get the client from <a href="https://github.com/davidfowl/MessengR">github</a></li>
+           <li>
+Change the settings in MessengR.Client's app.config
+<pre>
+<%: config%>
+</pre>
+           </li>
        </ol>
        <%
    }
    else
    {
        %> 
-           Get the client from <a href="https://github.com/davidfowl/MessengR">github</a>
+Get the client from <a href="https://github.com/davidfowl/MessengR">github</a>
+Change the settings in MessengR.Client's app.config
+<pre>
+<%: config%>
+</pre>
        <%
    }
 %>

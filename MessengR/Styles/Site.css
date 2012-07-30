@@ -279,3 +279,8 @@ div.accountInfo {
   height: 149px;
   z-index: 3
 }
+
+pre {
+    font-size: 12px;
+    font-family: Consolas;
+}
