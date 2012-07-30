@@ -90,6 +90,7 @@
                     Height="65"
                     Width="65"
                     Grid.Column="1" 
+                    IsDefault="True"
                     Style="{DynamicResource MetroCircleButtonStyle}" 
                     Foreground="{DynamicResource GrayBrush2}"
                     ToolTip="Send message">
