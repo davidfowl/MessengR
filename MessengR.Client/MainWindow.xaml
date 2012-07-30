@@ -4,7 +4,7 @@
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:v="clr-namespace:MessengR.Client.View"
         xmlns:vm="clr-namespace:MessengR.Client.ViewModel"
-        Title="MessengR" ShowTitleBar="False" Height="525" Width="375" MinWidth="375" MinHeight="525">
+        Title="MessengR" ShowTitleBar="False" Icon="/Resources/Images/chat.png" Height="525" Width="375" MinWidth="375" MinHeight="525">
     <Window.DataContext>
         <vm:MainViewModel />
     </Window.DataContext>
