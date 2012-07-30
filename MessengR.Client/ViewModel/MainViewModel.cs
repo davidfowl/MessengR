@@ -133,17 +133,18 @@ namespace MessengR.Client.ViewModel
 
         private void OnUserStatusChange(User user)
         {
-            //Mark user as online/offline
+            // Mark user as online/offline
             if (Contacts != null)
             {
                 var contact = Contacts.SingleOrDefault(u => u.User.Name == user.Name);
                 if (contact != null)
                 {
-                    //For the contact list to register that the contact has changed status,
-                    //have to remove and re-add the contact again
+                    // For the contact list to register that the contact has changed status,
+                    // have to remove and re-add the contact again
                     Contacts.Remove(contact);
-                    Contacts.Add(new ContactViewModel(user, Me));
                 }
+
+                Contacts.Add(new ContactViewModel(user, Me));
             }
         }
 
@@ -151,7 +152,7 @@ namespace MessengR.Client.ViewModel
         {
             if (e.Contact != null)
             {
-                //Start a new chat session with the selected contact
+                // Start a new chat session with the selected contact
                 _chatSessions.StartNewSession(e.Contact, Me.User);
             }
         }
