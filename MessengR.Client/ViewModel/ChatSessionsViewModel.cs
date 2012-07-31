@@ -29,8 +29,7 @@ namespace MessengR.Client.ViewModel
         public void AddMessage(Message message, User initiator)
         {
             ChatSessionViewModel chatSession;
-            _chatSessions.TryGetValue(message.From.Name, out chatSession);
-            if (chatSession == null)
+            if (!_chatSessions.TryGetValue(message.From.Name, out chatSession))
             {
                 chatSession = StartNewSession(message.From, initiator);
                 chatSession.OpenChat();
