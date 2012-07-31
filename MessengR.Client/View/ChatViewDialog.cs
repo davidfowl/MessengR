@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using MessengR.Client.Common;
 using MessengR.Client.Interface;
 
 namespace MessengR.Client.View
 {
     public class ChatViewDialog : IChatDialog
     {
+        public event EventHandler<ChatSessionEventArgs> ViewClosedEvent;
         private ChatView _view;
 
         private ChatView GetDialog()
@@ -41,6 +43,10 @@ namespace MessengR.Client.View
 
         void ViewClosed(object sender, EventArgs e)
         {
+            if (ViewClosedEvent != null)
+            {
+                ViewClosedEvent(this, null);
+            }
             _view = null;
         }
     }

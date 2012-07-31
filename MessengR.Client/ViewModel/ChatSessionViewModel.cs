@@ -5,6 +5,8 @@ using System.Windows;
 using System.Windows.Input;
 using MessengR.Client.Common;
 using MessengR.Client.Hubs;
+using MessengR.Client.Interface;
+using MessengR.Client.Service;
 using MessengR.Models;
 
 namespace MessengR.Client.ViewModel
@@ -12,6 +14,7 @@ namespace MessengR.Client.ViewModel
     public class ChatSessionViewModel : ViewModelBase
     {
         public event EventHandler<ChatSessionEventArgs> SendMessage;
+        public event EventHandler<ChatSessionEventArgs> ChatSessionClosed;
 
         public User Initiator { get; set; }
         public User Contact { get; set; }
@@ -42,6 +45,13 @@ namespace MessengR.Client.ViewModel
             Conversation = new ObservableCollection<Message>();
         }
 
+        public void OpenChat()
+        {
+            var chatView = ServiceProvider.Instance.Get<IChatDialog>();
+            chatView.BindViewModel(this);
+            chatView.ViewClosedEvent += OnViewClosed;
+            chatView.Show();
+        }
 
         public void MessageReceived(Message message)
         {
@@ -73,6 +83,14 @@ namespace MessengR.Client.ViewModel
         public bool CanSend()
         {
             return !String.IsNullOrEmpty(Message);
+        }
+
+        public void OnViewClosed(object sender, EventArgs e)
+        {
+            if (ChatSessionClosed != null)
+            {
+                ChatSessionClosed(this, new ChatSessionEventArgs(Contact, String.Empty));
+            }
         }
     }
 }

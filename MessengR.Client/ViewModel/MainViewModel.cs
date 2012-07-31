@@ -136,7 +136,7 @@ namespace MessengR.Client.ViewModel
             // Mark user as online/offline
             if (Contacts != null)
             {
-                var contact = Contacts.SingleOrDefault(u => u.User.Name == user.Name);
+                var contact = Contacts.FirstOrDefault(u => u.User.Name == user.Name);
                 if (contact != null)
                 {
                     // For the contact list to register that the contact has changed status,
@@ -153,7 +153,7 @@ namespace MessengR.Client.ViewModel
             if (e.Contact != null)
             {
                 // Start a new chat session with the selected contact
-                _chatSessions.StartNewSession(e.Contact, Me.User);
+                _chatSessions.StartNewSession(e.Contact, Me.User).OpenChat();
             }
         }
 

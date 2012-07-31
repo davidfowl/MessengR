@@ -14,30 +14,28 @@ namespace MessengR.Client.ViewModel
     public class ChatSessionsViewModel
     {
         public event EventHandler<ChatSessionEventArgs> SendMessage;
-        private readonly ObservableCollection<ChatSessionViewModel> _chatSessions = new ObservableCollection<ChatSessionViewModel>();
+        private readonly Dictionary<string, ChatSessionViewModel> _chatSessions = new Dictionary<string, ChatSessionViewModel>();
 
-        public void StartNewSession(User contact, User initiator)
+        public ChatSessionViewModel StartNewSession(User contact, User initiator)
         {
             var viewModel = new ChatSessionViewModel(contact);
             viewModel.Initiator = initiator;
             viewModel.SendMessage += OnSendMessage;
-            var chatView = ServiceProvider.Instance.Get<IChatDialog>();
-            chatView.BindViewModel(viewModel);
-            chatView.Show();
-            _chatSessions.Add(viewModel);
+            viewModel.ChatSessionClosed += OnChatSessionClosed;
+            _chatSessions.Add(contact.Name, viewModel);
+            return viewModel;
         }
 
         public void AddMessage(Message message, User initiator)
         {
-            if (_chatSessions.SingleOrDefault(c => c.Contact.Name == message.From.Name) == null)
+            ChatSessionViewModel chatSession;
+            _chatSessions.TryGetValue(message.From.Name, out chatSession);
+            if (chatSession == null)
             {
-                StartNewSession(message.From, initiator);
-                _chatSessions.SingleOrDefault(c => c.Contact.Name == message.From.Name).MessageReceived(message);
+                chatSession = StartNewSession(message.From, initiator);
+                chatSession.OpenChat();
             }
-            else
-            {
-                _chatSessions.SingleOrDefault(c => c.Contact.Name == message.From.Name).MessageReceived(message);
-            }
+            chatSession.MessageReceived(message);
         }
 
         private void OnSendMessage(object sender, ChatSessionEventArgs e)
@@ -45,6 +43,14 @@ namespace MessengR.Client.ViewModel
             if (e != null)
             {
                 SendMessage(sender, e);
+            }
+        }
+
+        private void OnChatSessionClosed(object sender, ChatSessionEventArgs e)
+        {
+            if(e != null && e.Contact != null)
+            {
+                _chatSessions.Remove(e.Contact.Name);
             }
         }
     }
