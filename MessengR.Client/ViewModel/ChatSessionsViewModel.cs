@@ -26,12 +26,22 @@ namespace MessengR.Client.ViewModel
             return viewModel;
         }
 
+        public void LoadConversation(User contact, IEnumerable<Message> conversation)
+        {
+            ChatSessionViewModel chatSession;
+            if(_chatSessions.TryGetValue(contact.Name, out chatSession))
+            {
+                var union = conversation.Union(chatSession.Conversation);
+                chatSession.Conversation = new ObservableCollection<Message>(union);
+            }
+        }
+
         public void AddMessage(Message message, User initiator)
         {
             ChatSessionViewModel chatSession;
-            if (!_chatSessions.TryGetValue(message.From.Name, out chatSession))
+            if (!_chatSessions.TryGetValue(message.From, out chatSession))
             {
-                chatSession = StartNewSession(message.From, initiator);
+                chatSession = StartNewSession(message.Initiator, initiator);
                 chatSession.OpenChat();
             }
             chatSession.MessageReceived(message);

@@ -18,7 +18,16 @@ namespace MessengR.Client.ViewModel
 
         public User Initiator { get; set; }
         public User Contact { get; set; }
-        public ObservableCollection<Message> Conversation { get; set; }
+        private ObservableCollection<Message> _conversation;
+        public ObservableCollection<Message> Conversation 
+        {
+            get { return _conversation; }
+            set
+            {
+                _conversation = value;
+                OnPropertyChanged("Conversation");
+            }
+        }
 
         private string _message;
         public string Message
@@ -53,6 +62,11 @@ namespace MessengR.Client.ViewModel
             chatView.Show();
         }
 
+        public void AddMessage(Message message)
+        {
+            Conversation.Add(message);
+        }
+
         public void MessageReceived(Message message)
         {
             message.DateReceived = DateTime.Now;
@@ -74,8 +88,8 @@ namespace MessengR.Client.ViewModel
 
         public void Send()
         {
-            SendMessage(this, new ChatSessionEventArgs(this.Contact, this.Message));
-            var message = new Message { From = Initiator, Value = Message, IsMine = true, DateReceived = DateTime.Now };
+            var message = new Message { From = Initiator.Name, Initiator = Initiator, To = Contact.Name, Contact = Contact, Value = Message, IsMine = true, DateReceived = DateTime.Now };
+            SendMessage(this, new ChatSessionEventArgs(Contact, message));
             Conversation.Add(message);
             Message = String.Empty;
         }
@@ -89,7 +103,7 @@ namespace MessengR.Client.ViewModel
         {
             if (ChatSessionClosed != null)
             {
-                ChatSessionClosed(this, new ChatSessionEventArgs(Contact, String.Empty));
+                ChatSessionClosed(this, new ChatSessionEventArgs(Contact, null));
             }
         }
     }

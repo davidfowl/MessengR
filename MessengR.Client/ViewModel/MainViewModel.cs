@@ -10,6 +10,8 @@ using MessengR.Client.Hubs;
 using MessengR.Models;
 using Microsoft.Practices.Prism.Events;
 using SignalR.Client.Hubs;
+using System.Windows;
+using System.Diagnostics;
 
 namespace MessengR.Client.ViewModel
 {
@@ -94,25 +96,50 @@ namespace MessengR.Client.ViewModel
                 }
                 else
                 {
-                    // Get a list of users and add it to the view model
-                    _chat.GetUsers().ContinueWith(getUsersTask =>
+                    _chat.GetUser(Name).ContinueWith(getUserTask =>
                     {
-                        if (getUsersTask.IsFaulted)
-                        {
-                            // Show a connection error here
-                        }
+                        if (getUserTask.IsFaulted)
+                        { }
                         else
                         {
-                            var result = getUsersTask.Result;
-                            Me = new ContactViewModel(result.Single(u => u.Name == Name));
-                            Me.OpenChatEvent += OnOpenChat;
+                            if (getUserTask.Result != null)
+                            {
+                                Me = new ContactViewModel(getUserTask.Result);
+                                Me.OpenChatEvent += OnOpenChat;
 
-                            // Exclude current user from Contact list
-                            var contacts = from User user in result
-                                           where !user.Name.Equals(Me.User.Name, StringComparison.OrdinalIgnoreCase)
-                                           select new ContactViewModel(user, Me);
+                                _chat.GetConversations(Me.User).ContinueWith(getConversationTask =>
+                                {
+                                    if (getConversationTask.IsFaulted)
+                                    {
+                                        Debug.WriteLine("GetConversations Failed: " + getConversationTask.Status);
+                                    }
+                                    else
+                                    {
+                                        var conversationResult = getConversationTask.Result;
+                                        Conversations = new ObservableCollection<Message>(conversationResult);
+                                        Debug.WriteLine("Conversations Count: " + conversationResult.Count());
+                                    }
+                                });
 
-                            Contacts = new ObservableCollection<ContactViewModel>(contacts);
+                                // Get a list of users and add it to the view model
+                                _chat.GetUsers().ContinueWith(getUsersTask =>
+                                {
+                                    if (getUsersTask.IsFaulted)
+                                    {
+                                        // Show a connection error here
+                                    }
+                                    else
+                                    {
+                                        // Exclude current user from Contact list
+                                        var contacts = from User user in getUsersTask.Result
+                                                       where !user.Name.Equals(Me.User.Name, StringComparison.OrdinalIgnoreCase)
+                                                       select new ContactViewModel(user, Me);
+
+                                        Contacts = new ObservableCollection<ContactViewModel>(contacts);
+                                        Debug.WriteLine("Contacts Count: " + contacts.Count());
+                                    }
+                                });
+                            }
                         }
                     });
                 }
@@ -154,12 +181,24 @@ namespace MessengR.Client.ViewModel
             {
                 // Start a new chat session with the selected contact
                 _chatSessions.StartNewSession(e.Contact, Me.User).OpenChat();
+                _chat.GetConversation(Me.User, e.Contact).ContinueWith(conversationTask =>
+                    {
+                        if (conversationTask.IsFaulted)
+                        {
+                            Debug.WriteLine("GetConversation faulted.");
+                        }
+                        else
+                        {
+                            var conversation = conversationTask.Result.ToList();
+                            _chatSessions.LoadConversation(e.Contact, conversation);
+                        }
+                    });
             }
         }
 
         void OnSendMessage(object sender, ChatSessionEventArgs e)
         {
-            if (e.Contact != null && !String.IsNullOrEmpty(e.Message))
+            if (e.Contact != null && e.Message != null)
             {
                 //Send a message to the contact in the chat session
                 _chat.SendMessage(e.Contact.Name, e.Message).ContinueWith(sendMessage =>
@@ -167,6 +206,10 @@ namespace MessengR.Client.ViewModel
                     if (sendMessage.IsFaulted)
                     {
                         //display error
+                    }
+                    else
+                    {
+                        _chat.SaveMessage(e.Message);
                     }
                 });
             }

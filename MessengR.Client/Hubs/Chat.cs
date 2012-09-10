@@ -58,7 +58,22 @@ namespace MessengR.Client.Hubs
             return _chat.Invoke<User>("GetUser", userName);
         }
 
-        public Task<Message> SendMessage(string userName, string message)
+        public Task<IEnumerable<Message>> GetConversations(User user)
+        {
+            return _chat.Invoke<IEnumerable<Message>>("GetConversations", user);
+        }
+
+        public Task<IEnumerable<Message>> GetConversation(User user, User contact)
+        {
+            return _chat.Invoke<IEnumerable<Message>>("GetConversation", user, contact);
+        }
+
+        public void SaveMessage(Message message)
+        {
+            _chat.Invoke<Message>("SaveMessage", message);
+        }
+
+        public Task<Message> SendMessage(string userName, Message message)
         {
             return _chat.Invoke<Message>("Send", userName, message);
         }

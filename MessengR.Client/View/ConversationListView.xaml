@@ -53,14 +53,14 @@
                                             Grid.Column="1" 
                                             HorizontalAlignment="Stretch" 
                                             VerticalAlignment="Stretch" 
-                                            Content="{Binding Path=From, FallbackValue=From}" 
+                                            Content="{Binding Path=To, FallbackValue=ContactName}" 
                                             Foreground="{DynamicResource AccentColorBrush}" />
                                     <TextBlock 
                                             Grid.Row="1" 
                                             Grid.Column="1" 
                                             HorizontalAlignment="Stretch" 
                                             VerticalAlignment="Stretch" 
-                                            Text="{Binding Path=Value, FallbackValue=Value}"
+                                            Text="{Binding Path=Value, FallbackValue=Message}"
                                             TextWrapping="Wrap"
                                             />
                                 </Grid>

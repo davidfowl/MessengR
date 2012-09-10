@@ -18,7 +18,10 @@ namespace MessengR
         // This is needed for disconnect since we don't get the state propagated to us
         private static readonly ConcurrentDictionary<string, string> _reverseLookup = new ConcurrentDictionary<string, string>();
 
-        public void Send(string who, string message)
+
+        private static readonly IMessengrRepository _db = new PersistedRepository(new MessengrContext());
+
+        public void Send(string who, Message message)
         {
             EnsureAuthented();
 
@@ -31,8 +34,9 @@ namespace MessengR
                     // Send a message to each user, and tell them who it came from
                     Clients[id].addMessage(new Message
                     {
-                        From = GetUser(Context.User.Identity.Name),
-                        Value = message
+                        From = Context.User.Identity.Name,
+                        Initiator = GetUser(Context.User.Identity.Name),
+                        Value = message.Value
                     });
                 }
             }
@@ -47,6 +51,22 @@ namespace MessengR
         {
             return from MembershipUser u in Membership.GetAllUsers()
                    select GetUser(u);
+        }
+
+        public IEnumerable<Message> GetConversations(User user)
+        {
+            return _db.GetConversations(user);
+        }
+
+        public IEnumerable<Message> GetConversation(User user, User contact)
+        {
+            return _db.GetConversation(user, contact);
+        }
+
+        public void SaveMessage(Message message)
+        {
+            _db.Add(message);
+            _db.CommitChanges();
         }
 
         public User GetUser(string userName)

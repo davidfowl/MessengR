@@ -7,9 +7,9 @@ namespace MessengR.Client.Common
     public class ChatSessionEventArgs : EventArgs
     {
         public User Contact { get; set; }
-        public string Message { get; set; }
+        public Message Message { get; set; }
 
-        public ChatSessionEventArgs(User user, string message)
+        public ChatSessionEventArgs(User user, Message message)
         {
             Contact = user;
             Message = message;
