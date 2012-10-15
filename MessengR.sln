@@ -1,16 +1,16 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessengR", "MessengR\MessengR.csproj", "{29A10700-07F4-48CA-8808-6C20A843C596}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessengR.Client", "MessengR.Client\MessengR.Client.csproj", "{ACA55A69-81CA-4124-873D-B72850A76222}"
-EndProject
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{899D88EB-57A9-460F-971F-E7D29F915730}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
 		.nuget\nuget.exe = .nuget\nuget.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessengR", "MessengR\MessengR.csproj", "{29A10700-07F4-48CA-8808-6C20A843C596}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessengR.Client", "MessengR.Client\MessengR.Client.csproj", "{ACA55A69-81CA-4124-873D-B72850A76222}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessengR.Models", "MessengR.Models\MessengR.Models.csproj", "{FD8D602C-7FF6-4E18-B359-87D482848524}"
 EndProject

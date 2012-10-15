@@ -4,12 +4,10 @@ using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Threading;
-using System.Windows.Input;
 using MessengR.Client.Common;
 using MessengR.Client.Hubs;
 using MessengR.Models;
-using Microsoft.Practices.Prism.Events;
-using SignalR.Client.Hubs;
+using Microsoft.AspNet.SignalR.Client.Hubs;
 
 namespace MessengR.Client.ViewModel
 {
