@@ -90,10 +90,6 @@ namespace MessengR
                     connections.Remove(Context.ConnectionId);
                 }
 
-                // In case this is a browser refresh, wait a few milli seconds before removing all connections
-                // This way, hitting f5 don't suddenly cause an offline/online flip
-                Thread.Sleep(100);
-
                 if (connections.Count == 0)
                 {
                     _userConnections.TryRemove(Context.User.Identity.Name, out connections);
