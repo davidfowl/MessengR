@@ -16,6 +16,8 @@ namespace MessengR.Client.ViewModel
         public event EventHandler<ChatSessionEventArgs> SendMessage;
         public event EventHandler<ChatSessionEventArgs> ChatSessionClosed;
 
+        private IChatDialog _view;
+
         public User Initiator { get; set; }
         public User Contact { get; set; }
         private ObservableCollection<Message> _conversation;
@@ -60,6 +62,18 @@ namespace MessengR.Client.ViewModel
             chatView.BindViewModel(this);
             chatView.ViewClosedEvent += OnViewClosed;
             chatView.Show();
+            _view = chatView;
+        }
+
+        public void CloseChat()
+        {
+            if (_view != null)
+            {
+                _view.Close();
+                if (ChatSessionClosed != null)
+                    ChatSessionClosed(this, new ChatSessionEventArgs(Contact, null));
+                _view = null;
+            }
         }
 
         public void AddMessage(Message message)

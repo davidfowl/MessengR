@@ -78,6 +78,7 @@ namespace MessengR.Client.ViewModel
 
                         var viewModel = new MainViewModel(Name, authResult.AuthCookie);
                         var main = new MainWindow() { DataContext = viewModel };
+                        main.Closed += viewModel.OnViewClosed;
                         main.Show();
                         LoginSuccess(this, null);
                     }

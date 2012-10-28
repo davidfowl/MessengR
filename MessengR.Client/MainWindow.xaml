@@ -6,6 +6,8 @@
         xmlns:vm="clr-namespace:MessengR.Client.ViewModel"
         Title="MessengR" ShowTitleBar="False" Icon="/Resources/Images/chat.png" Height="525" Width="375" MinWidth="375" MinHeight="525">
     <Window.DataContext>
+        <!-- Use this mock view model to get design time data displayed -->
+        <!--<vm:MockMainViewModel />-->
         <vm:MainViewModel />
     </Window.DataContext>
     <Window.Resources>
@@ -28,13 +30,17 @@
             <ColumnDefinition Width="60" />
         </Grid.ColumnDefinitions>
         <v:HeaderView x:Name="Header"  Grid.Row="0" Grid.ColumnSpan="3"/>
-        <StackPanel Grid.Row="1" Orientation="Horizontal">
-            <Label Content="Logged in as:"/>
-            <Label Content="{Binding Me.User.Name}"/>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="5,0">
+                    <Rectangle Width="15" Height="15" Fill="{StaticResource AccentDarkColorBrush}">
+                <Rectangle.OpacityMask>
+                    <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_people}" Opacity="0.5" />
+                </Rectangle.OpacityMask>
+            </Rectangle>
+            <Label Content="{Binding Me.User.Name}" FontSize="18" Foreground="{StaticResource AccentDarkColorBrush}" Opacity="0.5" />
         </StackPanel>
         <TabControl Grid.Row="2" HorizontalAlignment="Stretch" Name="tabControl1" VerticalAlignment="Stretch" Grid.ColumnSpan="3">
             <TabItem Name="tabItem1" Header="Conversations">
-                <ContentControl Content="{Binding Conversations}" ContentTemplate="{StaticResource ConversationListTemplate}"/>
+                <ContentControl Content="{Binding Conversations}" ContentTemplate="{StaticResource ConversationListTemplate}" Margin="0,1,0,-1"/>
             </TabItem>
             <TabItem Name="tabItem2" Header="Contacts">
                 <ContentControl Content="{Binding Contacts}" ContentTemplate="{StaticResource ContactListTemplate}"/>

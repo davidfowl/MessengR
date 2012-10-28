@@ -12,8 +12,8 @@ namespace MessengR.Models
         public string From { get; set; }
         public string Value { get; set; }
         public DateTime DateReceived { get; set; }
-
-        public virtual bool IsMine { get; set; }
+        
+        public bool IsMine { get; set; }
         public virtual User Initiator { get; set; }
         public virtual User Contact { get; set; }
     }

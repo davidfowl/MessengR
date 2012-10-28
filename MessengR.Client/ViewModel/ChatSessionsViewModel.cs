@@ -47,6 +47,15 @@ namespace MessengR.Client.ViewModel
             chatSession.MessageReceived(message);
         }
 
+        public void CloseSessions(string user)
+        {
+            var chatSessions = _chatSessions.Values.Where(cs => cs.Initiator.Name == user);
+            foreach(var chatSession in chatSessions.ToList())
+            {
+                chatSession.CloseChat();
+            }
+        }
+
         private void OnSendMessage(object sender, ChatSessionEventArgs e)
         {
             if (e != null)

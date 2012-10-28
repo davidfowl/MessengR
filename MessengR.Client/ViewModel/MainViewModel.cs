@@ -55,8 +55,8 @@ namespace MessengR.Client.ViewModel
             }
         }
 
-        private ObservableCollection<Message> _conversations;
-        public ObservableCollection<Message> Conversations
+        private ObservableCollection<ContactViewModel> _conversations;
+        public ObservableCollection<ContactViewModel> Conversations
         {
             get { return _conversations; }
             set
@@ -115,9 +115,10 @@ namespace MessengR.Client.ViewModel
                                     }
                                     else
                                     {
-                                        var conversationResult = getConversationTask.Result;
-                                        Conversations = new ObservableCollection<Message>(conversationResult);
-                                        Debug.WriteLine("Conversations Count: " + conversationResult.Count());
+                                        var conversations =  from Message message in getConversationTask.Result
+                                                             select new ContactViewModel(message.Contact, message, Me);
+                                        Conversations = new ObservableCollection<ContactViewModel>(conversations);
+                                        Debug.WriteLine("Conversations Count: " + conversations.Count());
                                     }
                                 });
 
@@ -170,8 +171,17 @@ namespace MessengR.Client.ViewModel
                     // have to remove and re-add the contact again
                     Contacts.Remove(contact);
                 }
-
                 Contacts.Add(new ContactViewModel(user, Me));
+            }
+
+            if (Conversations != null)
+            {
+                var conversation = Conversations.FirstOrDefault(u => u.User.Name == user.Name);
+                if (conversation != null)
+                {
+                    Conversations.Remove(conversation);
+                    Conversations.Add(new ContactViewModel(user, conversation.Message, Me));
+                }
             }
         }
 
@@ -213,6 +223,21 @@ namespace MessengR.Client.ViewModel
                     }
                 });
             }
+        }
+
+        public void OnViewClosed(object sender, EventArgs e)
+        {
+            _chatSessions.CloseSessions(Name);
+            _chat.Disconnect(Name, _connection.ConnectionId).ContinueWith(disconnect =>
+            {
+                if (disconnect.IsFaulted)
+                {
+                }
+                else
+                {
+                    _connection.Stop();
+                }
+            });
         }
     }
 }

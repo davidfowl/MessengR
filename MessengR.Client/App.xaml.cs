@@ -8,6 +8,8 @@ using MessengR.Client.Interface;
 using MessengR.Client.View;
 using MessengR.Client.ViewModel;
 using MessengR.Client.Service;
+using System.Data.Entity;
+using MessengR.Models;
 
 namespace MessengR.Client
 {

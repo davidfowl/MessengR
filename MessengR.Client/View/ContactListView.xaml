@@ -1,6 +1,7 @@
 ﻿<v:ViewBase x:Class="MessengR.Client.View.ContactListView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:l="clr-namespace:MessengR.Client.Helpers"
         xmlns:v="clr-namespace:MessengR.Client.View"
         xmlns:vm="clr-namepsace:MessengR.Client.ViewModel">
     <v:ViewBase.Resources>
@@ -9,10 +10,80 @@
                 <PropertyGroupDescription PropertyName="Status"/>
             </CollectionViewSource.GroupDescriptions>
         </CollectionViewSource>
+        <DataTemplate x:Key="ConversationOnlineDataTemplate">
+            <Button HorizontalContentAlignment="Stretch" Padding="0,0,0,2" Background="{StaticResource AccentColorBrush}">
+                <Button.InputBindings>
+                    <MouseBinding Gesture="LeftDoubleClick" Command="{Binding Path=ChatCommand}" CommandParameter="{Binding}" />
+                </Button.InputBindings>
+                <StackPanel>
+                    <Grid Margin="5,0,5,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Row="0" Grid.Column="0" Height="10" Width="10" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                    BorderThickness="1"
+                                    CornerRadius="3,3,3,3" BorderBrush="Green" Background="Green">
+                        </Border>
+                        <Label 
+                                Margin="5,0,0,0" 
+                                Padding="0,2"
+                                Grid.Row="0" 
+                                Grid.Column="1" 
+                                VerticalAlignment="Top" 
+                                HorizontalAlignment="Left"
+                                FontSize="24"
+                                Content="{Binding Path=User.Name, FallbackValue=ContactName}"
+                                Foreground="{StaticResource AccentDarkColorBrush}"/>
+                    </Grid>
+                </StackPanel>
+            </Button>
+        </DataTemplate>
+        <DataTemplate x:Key="ConversationOfflineDataTemplate">
+            <Button HorizontalContentAlignment="Stretch" Padding="0,0,0,2" Background="{StaticResource AccentColorBrush}">
+                <Button.InputBindings>
+                    <MouseBinding Gesture="LeftDoubleClick" Command="{Binding Path=ChatCommand}" CommandParameter="{Binding}" />
+                </Button.InputBindings>
+                <StackPanel>
+                    <Grid Margin="5,0,5,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="10"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Row="0" Grid.Column="0" Height="10" Width="10" HorizontalAlignment="Left" VerticalAlignment="Center"
+                                    BorderThickness="1"
+                                    CornerRadius="3,3,3,3" BorderBrush="Red" Background="Red">
+                        </Border>
+                        <Label 
+                                Margin="5,0,0,0" 
+                                Padding="0,2"
+                                Grid.Row="0" 
+                                Grid.Column="1" 
+                                VerticalAlignment="Top" 
+                                HorizontalAlignment="Left"
+                                FontSize="24"
+                                Content="{Binding Path=User.Name, FallbackValue=ContactName}"
+                                Foreground="{StaticResource AccentDarkColorBrush}"/>
+                    </Grid>
+                </StackPanel>
+            </Button>
+        </DataTemplate>
+        <l:ContactViewDataTemplateSelector x:Key="templateSelector"
+                                        OnlineTemplate="{StaticResource ConversationOnlineDataTemplate}"
+                                        OfflineTemplate="{StaticResource ConversationOfflineDataTemplate}"/>
+
     </v:ViewBase.Resources>
     <Grid>
         <ScrollViewer HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <ListView x:Name="ContactList" BorderThickness="0" ItemsSource="{Binding  Source={StaticResource usersByStatus}}">
+            <ListView x:Name="ContactList" BorderThickness="0" ItemsSource="{Binding  Source={StaticResource usersByStatus}}" ItemTemplateSelector="{StaticResource templateSelector}">
                 <ListView.GroupStyle>
                     <GroupStyle>
                         <GroupStyle.ContainerStyle>
@@ -23,7 +94,7 @@
                                             <Expander IsExpanded="True">
                                                 <Expander.Header>
                                                     <DockPanel>
-                                                        <TextBlock FontWeight="Bold" FontSize="15" Text="{Binding Name}"/>
+                                                        <TextBlock FontWeight="Bold" FontSize="15" Text="{Binding Name}" />
                                                         <TextBlock FontWeight="Bold" FontSize="15" Text=" ("/>
                                                         <TextBlock FontWeight="Bold" FontSize="15" Text="{Binding ItemCount}"/>
                                                         <TextBlock FontWeight="Bold" FontSize="15" Text=")"/>
@@ -38,7 +109,7 @@
                         </GroupStyle.ContainerStyle>
                     </GroupStyle>
                 </ListView.GroupStyle>
-                <ListView.ItemTemplate>
+                <!--<ListView.ItemTemplate>
                     <DataTemplate>
                         <Button HorizontalContentAlignment="Stretch" Padding="0,0,0,2">
                             <Button.InputBindings>
@@ -74,13 +145,13 @@
                             </StackPanel>
                         </Button>
                     </DataTemplate>
-                </ListView.ItemTemplate>
+                </ListView.ItemTemplate>-->
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="Control.HorizontalContentAlignment" Value="Stretch"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsOnline}" Value="False">
-                                <Setter Property="Background" Value="{StaticResource DisabledForegroundBrush}"/>
+                                <!--<Setter Property="Background" Value="{StaticResource DisabledForegroundBrush}"/>-->
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>

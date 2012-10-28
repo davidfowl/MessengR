@@ -38,6 +38,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net40\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="MahApps.Metro">
       <HintPath>..\packages\MahApps.Metro.0.8.0.0\lib\net40\MahApps.Metro.dll</HintPath>
     </Reference>
@@ -91,6 +94,8 @@
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Common\ChatSessionEventArgs.cs" />
     <Compile Include="Common\OpenChatEventArgs.cs" />
+    <Compile Include="Helpers\BoolToStatusBrushConverter.cs" />
+    <Compile Include="Helpers\DataTemplateSelectors.cs" />
     <Compile Include="ViewModel\ChatSessionsViewModel.cs" />
     <Compile Include="Common\CommandBase.cs" />
     <Compile Include="Common\PasswordHelper.cs" />
@@ -105,6 +110,7 @@
     <Compile Include="ViewModel\LoginViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ContactViewModel.cs" />
+    <Compile Include="ViewModel\MockViewModels.cs" />
     <Compile Include="View\ChatView.xaml.cs">
       <DependentUpon>ChatView.xaml</DependentUpon>
     </Compile>

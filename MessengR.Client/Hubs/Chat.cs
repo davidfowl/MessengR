@@ -77,5 +77,10 @@ namespace MessengR.Client.Hubs
         {
             return _chat.Invoke<Message>("Send", userName, message);
         }
+
+        public Task Disconnect(string userName, string connectionId)
+        {
+            return _chat.Invoke("Disconnect", userName, connectionId);
+        }
     }
 }

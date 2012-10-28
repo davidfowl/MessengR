@@ -3,6 +3,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:m="clr-namespace:MessengR.Client.ViewModel"
+        xmlns:l="clr-namespace:MessengR.Client.Helpers"
         xmlns:Behaviours="clr-namespace:MahApps.Metro.Behaviours;assembly=MahApps.Metro"
         xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         Title="ChatView" Icon="../Resources/Images/chat.png" ShowTitleBar="False" Height="500" Width="400">
@@ -10,8 +11,85 @@
         <Behaviours:BorderlessWindowBehavior ResizeWithGrip="False"/>
     </i:Interaction.Behaviors>
     <Window.DataContext>
+        <!-- Use this mock view model to get design time data displayed -->
+        <!--<m:MockChatViewModel/>-->
         <m:ChatSessionViewModel/>
     </Window.DataContext>
+    <Window.Resources>
+        <m:MockChatViewModel x:Key="DesignViewModel"/>
+        <m:ChatSessionViewModel x:Key="ChatViewModel"/>
+
+        <DataTemplate x:Key="MyMessageDataTemplate">
+            <Grid
+                Width="300" 
+                HorizontalAlignment="Right"
+                Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Rectangle x:Name="MessageBox" Fill="{StaticResource AccentColorBrush}"
+                           Grid.RowSpan="2"/>
+                <TextBlock
+                    Width="300"
+                    Text="{Binding Path=Value}"
+                    Padding="5"
+                    Grid.Row="0"
+                    TextWrapping="Wrap"
+                    Foreground="{DynamicResource WhiteBrush}"/>
+                <TextBlock 
+                    HorizontalAlignment="Right" 
+                    Padding="5" 
+                    Grid.Row="1"
+                    Text="{Binding DateReceived}"
+                    Foreground="{DynamicResource WhiteBrush}"/>
+                <Path Data="m 0,0 l 8,0 l 0,8 l -8,-8"
+                      Fill="{StaticResource AccentColorBrush}"
+                      Margin="0,0,5,0"
+                      Grid.Row="2"
+                      HorizontalAlignment="Right" />
+            </Grid>
+        </DataTemplate>
+
+        <DataTemplate x:Key="DefaultMessageDataTemplate">
+            <Grid
+                Width="300" 
+                HorizontalAlignment="Left"
+                Margin="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Path Data="m 0,0 l 0,8 l 8,0 l -8,-8"
+                    Fill="{StaticResource AccentDarkColorBrush}"
+                    Margin="5,0,0,0"
+                    HorizontalAlignment="Left"/>
+                <Rectangle x:Name="MessageBox" Fill="{StaticResource AccentDarkColorBrush}"
+                           Grid.Row="1" Grid.RowSpan="2"/>
+                <TextBlock
+                    Width="300"
+                    Text="{Binding Path=Value}"
+                    Padding="5"
+                    Grid.Row="1"
+                    TextWrapping="Wrap"
+                    Foreground="{DynamicResource WhiteBrush}"/>
+                <TextBlock 
+                    HorizontalAlignment="Right" 
+                    Padding="5" 
+                    Grid.Row="2"
+                    Text="{Binding DateReceived}"
+                    Foreground="{DynamicResource WhiteBrush}"/>
+            </Grid>
+        </DataTemplate>
+
+        <l:ChatViewDataTemplateSelectors x:Key="templateSelector"
+                                        DefaultTemplate="{StaticResource DefaultMessageDataTemplate}"
+                                        MineTemplate="{StaticResource MyMessageDataTemplate}"/>
+        
+        <l:BoolToStatusBrushConverter x:Key="statusConverter" />
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -20,8 +98,17 @@
         </Grid.RowDefinitions>
         <StackPanel Orientation="Horizontal">
             <Image Source="../Resources/Images/chat.png" Height="48" Width="48" />
+            <!--<Border Margin="5, 10" 
+                    Height="10" 
+                    Width="10" 
+                    HorizontalAlignment="Right" 
+                    VerticalAlignment="Top"
+                    BorderThickness="1"
+                    CornerRadius="3" 
+                    BorderBrush="{Binding Contact.Online, Converter={StaticResource statusConverter}}" 
+                    Background="{Binding Contact.Online, Converter={StaticResource statusConverter}}">
+            </Border>-->
             <Label FontSize="26.67"
-                       Margin="12,0,0,0"
                        Padding="0,2"
                        HorizontalAlignment="Stretch" 
                        VerticalAlignment="Stretch" 
@@ -29,41 +116,10 @@
                        Foreground="{DynamicResource BlackBrush}" Opacity="0.5"/>
         </StackPanel>
         <ScrollViewer Grid.Row="1" Margin="12,0,0,0">
-            <ListView x:Name="ConversationList" BorderThickness="0" ItemsSource="{Binding Path=Conversation}">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel 
-                            Width="250" 
-                            MinHeight="50"
-                            HorizontalAlignment="Right"
-                            Margin="5">
-                            <TextBlock 
-                            Width="250"
-                            Text="{Binding Path=Value}"
-                            Padding="5"
-                            TextWrapping="Wrap"
-                            Foreground="{DynamicResource WhiteBrush}"/>
-                            <TextBlock 
-                                HorizontalAlignment="Right" 
-                                Padding="5" 
-                                Text="{Binding DateReceived}"
-                                Foreground="{DynamicResource WhiteBrush}"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-                <ListView.ItemContainerStyle>
-                    <Style>
-                        <Setter Property="Control.Margin" Value="0,2"/>
-                        <Setter Property="Control.HorizontalAlignment" Value="Right"/>
-                        <Setter Property="StackPanel.Background" Value="{DynamicResource AccentColorBrush}"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsMine}" Value="false">
-                                <Setter Property="StackPanel.Background" Value="{DynamicResource AccentDarkColorBrush}"/>
-                                <Setter Property="StackPanel.HorizontalAlignment" Value="Left"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </ListView.ItemContainerStyle>
+            <ListView x:Name="ConversationList" 
+                      BorderThickness="0" 
+                      ItemsSource="{Binding Path=Conversation}"
+                      ItemTemplateSelector="{StaticResource templateSelector}">
             </ListView>
         </ScrollViewer>
         <StackPanel Grid.Row="2" ClipToBounds="True">
@@ -81,6 +137,7 @@
                     Grid.Column="0" 
                     Height="45"
                     VerticalAlignment="Bottom"
+                    TextWrapping="Wrap"
                     BorderBrush="{DynamicResource TextBoxBorderBrush}"
                     Template="{DynamicResource MetroTextBoxBaseControlTemplate}"/>
                 <Button 

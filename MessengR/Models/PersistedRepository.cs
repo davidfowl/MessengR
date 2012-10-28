@@ -9,7 +9,7 @@ namespace MessengR.Models
     {
         private readonly MessengrContext _db;
 
-        private readonly Func<MessengrContext, User, IEnumerable<Message>> getConversations = (db, user) => db.Messages.Where(m => m.From == user.Name).OrderByDescending(msg => msg.DateReceived).GroupBy(c => c.To).Select(grp => grp.FirstOrDefault());
+        private readonly Func<MessengrContext, User, IEnumerable<Message>> getConversations = (db, user) => db.Messages.Where(m => m.From == user.Name).GroupBy(c => c.To).Select(grp => grp.OrderByDescending(msg => msg.DateReceived).FirstOrDefault());
         private readonly Func<MessengrContext, User, User, IEnumerable<Message>> getConversation = (db, user, contact) => db.Messages.Where(m => (m.From == user.Name && m.To == contact.Name) || (m.From == contact.Name && m.To == user.Name)).OrderBy(msg => msg.DateReceived);
         public PersistedRepository(MessengrContext db)
         {
@@ -18,7 +18,8 @@ namespace MessengR.Models
 
         public IEnumerable<Message> GetConversations(User user)
         {
-            return getConversations(_db, user);
+            var result = getConversations(_db, user).ToList();
+            return result;
         }
 
         public IEnumerable<Message> GetConversation(User user, User contact)
@@ -27,7 +28,6 @@ namespace MessengR.Models
             result.ForEach(msg => msg.IsMine = (msg.From == user.Name));
             result.ForEach(msg => msg.Initiator = (msg.From == user.Name) ? user : contact);
             result.ForEach(msg => msg.Contact = (msg.To == user.Name) ? user : contact);
-
             return result;
         }
 

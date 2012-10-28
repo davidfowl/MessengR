@@ -55,7 +55,9 @@ namespace MessengR
 
         public IEnumerable<Message> GetConversations(User user)
         {
-            return _db.GetConversations(user);
+            var conversations = _db.GetConversations(user).ToList();
+            conversations.ForEach(m => m.Contact = GetUser(m.To));
+            return conversations;
         }
 
         public IEnumerable<Message> GetConversation(User user, User contact)
@@ -113,6 +115,27 @@ namespace MessengR
                 throw new InvalidOperationException("You shouldn't be in any groups!");
             }
 
+            return null;
+        }
+
+        public Task Disconnect(string userName, string connectionId)
+        {
+            List<string> connections;
+            if (!String.IsNullOrEmpty(userName) && !String.IsNullOrEmpty(connectionId))
+            {
+                if(_userConnections.TryGetValue(userName, out connections))
+                {
+                    lock(connections)
+                    {
+                        connections.Remove(connectionId);
+                    }
+                    if(connections.Count == 0)
+                    {
+                        _userConnections.TryRemove(userName, out connections);
+                        return Clients.markOffline(GetUser(userName));
+                    }
+                }
+            }
             return null;
         }
 

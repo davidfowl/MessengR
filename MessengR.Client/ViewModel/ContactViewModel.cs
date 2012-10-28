@@ -22,14 +22,22 @@ namespace MessengR.Client.ViewModel
         private User _user;
         public User User
         {
-            get
-            {
-                return _user;
-            }
+            get { return _user; }
             set
             {
                 _user = value;
                 OnPropertyChanged("User");
+            }
+        }
+
+        private Message _message;
+        public Message Message
+        {
+            get { return _message; }
+            set
+            {
+                _message = value;
+                OnPropertyChanged("Message");
             }
         }
 
@@ -80,6 +88,15 @@ namespace MessengR.Client.ViewModel
             IsOnline = user.Online;
             Status = user.Online ? "Online" : "Offline";
             _parent = parent;
+        }
+
+        public ContactViewModel(User user, Message message, ContactViewModel parent)
+        {
+            User = user;
+            IsOnline = user.Online;
+            Status = user.Online ? "Online" : "Offline";
+            _parent = parent;
+            Message = message;
         }
         #endregion
 
