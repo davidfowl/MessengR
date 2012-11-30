@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using MessengR.Models;
-using SignalR.Client.Hubs;
+using Microsoft.AspNet.SignalR.Client.Hubs;
 
 namespace MessengR.Client.Hubs
 {
@@ -21,7 +21,7 @@ namespace MessengR.Client.Hubs
 
         public Chat(HubConnection connection)
         {
-            _chat = connection.CreateProxy("Chat");
+            _chat = connection.CreateHubProxy("Chat");
 
             _chat.On<User>("markOnline", user =>
             {

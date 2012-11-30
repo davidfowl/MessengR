@@ -9,9 +9,9 @@ using MessengR.Client.Common;
 using MessengR.Client.Hubs;
 using MessengR.Models;
 using Microsoft.Practices.Prism.Events;
-using SignalR.Client.Hubs;
 using System.Windows;
 using System.Diagnostics;
+using Microsoft.AspNet.SignalR.Client.Hubs;
 
 namespace MessengR.Client.ViewModel
 {
