@@ -1,7 +1,7 @@
 using System.Web;
 using System.Web.Routing;
 using Microsoft.AspNet.SignalR;
-using Microsoft.AspNet.SignalR.Hosting.AspNet;
+using Microsoft.AspNet.SignalR.Hosting;
 
 [assembly: PreApplicationStartMethod(typeof(MessengR.RegisterHubs), "Start")]
 

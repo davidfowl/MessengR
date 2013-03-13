@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Security;
 using MessengR.Models;
-using Microsoft.AspNet.SignalR.Hubs;
+using Microsoft.AspNet.SignalR;
 
 namespace MessengR
 {
