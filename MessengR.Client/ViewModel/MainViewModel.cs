@@ -82,7 +82,6 @@ namespace MessengR.Client.ViewModel
         private void InitializeConnection(string url, Cookie authCookie)
         {
             _connection = new HubConnection(url) { CookieContainer = new CookieContainer() };
-            
             _connection.CookieContainer.Add(authCookie);
 
             // Get a reference to the chat proxy
