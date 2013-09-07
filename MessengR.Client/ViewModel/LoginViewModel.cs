@@ -70,23 +70,23 @@ namespace MessengR.Client.ViewModel
         {
             var uiScheduler = TaskScheduler.FromCurrentSynchronizationContext();
             LoginHelper.LoginAsync(HostUrl, Name, Password).ContinueWith(task =>
+            {
+                AuthenticationResult authResult = task.Result;
+                if (authResult.StatusCode == HttpStatusCode.OK)
                 {
-                    AuthenticationResult authResult = task.Result;
-                    if (authResult.StatusCode == HttpStatusCode.OK)
-                    {
-                        Error = String.Empty;
+                    Error = String.Empty;
 
-                        var viewModel = new MainViewModel(Name, authResult.AuthCookie);
-                        var main = new MainWindow() { DataContext = viewModel };
-                        main.Closed += viewModel.OnViewClosed;
-                        main.Show();
-                        LoginSuccess(this, null);
-                    }
-                    else
-                    {
-                        Error = authResult.Error;
-                    }
-                }, uiScheduler);
+                    var viewModel = new MainViewModel(Name, authResult.AuthCookie);
+                    var main = new MainWindow() { DataContext = viewModel };
+                    main.Closed += viewModel.OnViewClosed;
+                    main.Show();
+                    LoginSuccess(this, null);
+                }
+                else
+                {
+                    Error = authResult.Error;
+                }
+            }, uiScheduler);
         }
 
         private bool CanLoginExecute()

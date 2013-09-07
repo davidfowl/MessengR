@@ -12,6 +12,7 @@ using Microsoft.Practices.Prism.Events;
 using System.Windows;
 using System.Diagnostics;
 using Microsoft.AspNet.SignalR.Client.Hubs;
+using Microsoft.AspNet.SignalR.Client;
 
 namespace MessengR.Client.ViewModel
 {

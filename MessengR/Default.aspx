@@ -1,13 +1,9 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="MessengR.Default" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
-    <script src="Scripts/jquery-1.9.1.min.js"></script>
-    <script src="Scripts/jquery.signalR-1.0.1.min.js"></script>
-    <script src="signalR/hubs" type="text/javascript"></script>     
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 
 <% 
-    
 var url = Regex.Replace(Request.Url.AbsoluteUri, @"Default\.aspx", "", RegexOptions.IgnoreCase);
 var config = String.Format(@"<?xml version=""1.0"" encoding=""utf-8"" ?>
 <configuration>

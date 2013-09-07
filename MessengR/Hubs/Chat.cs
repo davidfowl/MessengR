@@ -24,16 +24,13 @@ namespace MessengR
             if (_userConnections.TryGetValue(who, out connections))
             {
                 // Get a list of connections for the user we want to send a message to
-                foreach (var id in connections)
+                // Send a message to each user, and tell them who it came from
+                Clients.Clients(connections).addMessage(new Message
                 {
-                    // Send a message to each user, and tell them who it came from
-                    Clients.Client(id).addMessage(new Message
-                    {
-                        From = Context.User.Identity.Name,
-                        Initiator = GetUser(Context.User.Identity.Name),
-                        Value = message.Value
-                    });
-                }
+                    From = Context.User.Identity.Name,
+                    Initiator = GetUser(Context.User.Identity.Name),
+                    Value = message.Value
+                });
             }
         }
 
@@ -109,6 +106,7 @@ namespace MessengR
                     {
                         connections.Remove(connectionId);
                     }
+
                     if (connections.Count == 0)
                     {
                         _userConnections.TryRemove(userName, out connections);
@@ -119,7 +117,7 @@ namespace MessengR
             return null;
         }
 
-        public override Task OnDisconnected()
+        public override async Task OnDisconnected()
         {
             List<string> connections;
             string userName = Context.User.Identity.Name;
@@ -134,18 +132,16 @@ namespace MessengR
 
                 // In case this is a browser refresh, wait a few milli seconds before removing all connections
                 // This way, hitting f5 don't suddenly cause an offline/online flip
-                Thread.Sleep(100);
+                await Task.Delay(100);
 
                 if (connections.Count == 0)
                 {
                     _userConnections.TryRemove(userName, out connections);
 
                     // If this is the last connection, mark the user offline
-                    return Clients.All.markOffline(GetUser(userName));
+                    await Clients.All.markOffline(GetUser(userName));
                 }
             }
-
-            return base.OnDisconnected();
         }
     }
 }
